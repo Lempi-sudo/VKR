@@ -68,6 +68,7 @@ def testTrueRO ():
         bridge_image = imread("barb.tif")
         bridge_np = np.asarray(bridge_image)
         wav = pywt.WaveletPacket2D(bridge_np, 'haar')
+
         feature_space = wav['aaa'].data.copy()  # LLL
 
         #3 встраивание информации аддитивным методом

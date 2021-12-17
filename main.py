@@ -1,34 +1,14 @@
 import os
 from PIL import Image
-from ImageWork import LoadNamesImage, LoadImage
 from matplotlib import pyplot as plt
 from skimage.io import imread
 import numpy as np
+from pywt import wavedec
+import pywt
+from ImageWork import LoadNamesImage, LoadImage
 
 
-# def test():
-#     listdir = os.listdir()
-#
-#     tmpdir = os.getcwd()
-#
-#     for dirpath, dirnames, filenames in os.walk("TestDataSet"):
-#         # перебрать каталоги
-#         for dirname in dirnames:
-#             print("Каталог:", os.path.join(dirpath, dirname))
-#         # перебрать файлы
-#         for filename in filenames:
-#             path = dirpath + '/' + filename
-#             embed_image = imread(path)
-#             img = Image.fromarray(embed_image.astype(np.uint8))
-#             Image_RGB_np2 = np.asarray(img)
-#             image = Image.open(path)
-#             Image_RGB_np = np.asarray(image)
-#             image.show()
-#             plt.imshow(image, cmap='grey')
-#             plt.show()
-#             print("Файл:", os.path.join(dirpath, filename))
-#
-#     print("Все папки и файлы:", os.listdir())
+
 
 
 if __name__ == '__main__':
@@ -39,8 +19,9 @@ if __name__ == '__main__':
     try:
         while True:
             image = load_image.next_image()
-            print(image)
-
+            embed_wav = pywt.WaveletPacket2D(image, 'haar')
+            embed_feature_space = embed_wav['vvh'].data.copy()
+            print(embed_feature_space )
     except StopIteration:
         print("все изображения считаны")
 
