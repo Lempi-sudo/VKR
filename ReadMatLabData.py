@@ -13,6 +13,8 @@ if __name__ == '__main__':
 
     img = Image.fromarray(image_np.astype(np.uint8))
 
+
+
     img.show()
 
     print(df)

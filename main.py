@@ -3,8 +3,8 @@
 # from matplotlib import pyplot as plt
 # from skimage.io import imread
 # import numpy as np
-# from pywt import wavedec
-# import pywt
+from pywt import wavedec
+import pywt
 from ImageWork import LoadNamesImage, LoadImage
 
 

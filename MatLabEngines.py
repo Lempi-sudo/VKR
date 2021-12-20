@@ -16,4 +16,8 @@ if __name__ == '__main__':
 
     ca=np.array(CA)
 
+    sourse_image = eng.ilwt2(CA,CH,CV,CD, 'haar', 3 , nargout=1)
+
+    s_im = np.array(sourse_image)
+
     eng.exit()
