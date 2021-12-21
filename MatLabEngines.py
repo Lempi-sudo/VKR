@@ -1,23 +1,28 @@
 import matlab.engine
 import numpy as np
 from ImageWork import LoadNamesImage, LoadImage
-
-
-
-
+from skimage.io import imread
+import matlab
 
 if __name__ == '__main__':
     eng = matlab.engine.start_matlab()
-    path = 'D:/Code/MatLab/NIR/Image00001.tif';
-    image = eng.double(eng.imread(path));
-    X_InPlace3 = eng.lwt2(image, 'haar', 3 )
+    path = 'D:/Code/MatLab/NIR/Image00001.tif'
+    image = eng.double(eng.imread(path))
 
-    [CA,CH,CV,CD] = eng.lwt2(image,'haar',3,nargout=4)
+    try:
 
-    ca=np.array(CA)
+        [CA, CH, CV, CD] = eng.lwt2(image, 'haar', 3, nargout=4)
 
-    sourse_image = eng.ilwt2(CA,CH,CV,CD, 'haar', 3 , nargout=1)
+        ca = np.array(CA)
 
-    s_im = np.array(sourse_image)
+        mat_a = matlab.double(ca.tolist())
 
-    eng.exit()
+        sourse_image = eng.ilwt2(mat_a, CH, CV, CD, 'haar', 3, nargout=1)
+
+        s_im = np.array(sourse_image)
+
+    except Exception:
+        eng.exit()
+
+    finally:
+        eng.exit()
