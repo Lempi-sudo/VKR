@@ -1,4 +1,5 @@
 import numpy as np
+from skimage.io import imread
 
 
 class GenerateBinaryWaterMark:
@@ -8,32 +9,97 @@ class GenerateBinaryWaterMark:
 
 
 class WatermarkEmbedding:
-    def __init__(self, w):
+    def __init__(self, w, T=0.46):
         self.W = w
+        self.T = T
+        self.iter_water = iter(self.W)
 
-
-    def __extract_hl2_area__(self ,f):
-        Nf=f.shape[0]
-        lh1=f[Nf//2:Nf,0:Nf//2]
-
-        Nlh1=lh1.shape[0]
-
-        hl2=lh1[0:Nlh1//2,Nlh1//2:Nlh1]
+    def __extract_hl2_area__(self, f, intex=(128, 192, 64, 128)):
+        hl2 = f[intex[0]:intex[1], intex[2]:intex[3]]
         return hl2
 
+    def __insert_hl2_inF__(self,f,hl2, intex=(128, 192, 64, 128)):
+        f[intex[0]:intex[1], intex[2]:intex[3]]=hl2
+        return f
 
-    def embed(self,f):
-        if f.shape[0]>64 or f.shape[1]>64:
+    def __find_large_and_second_large_coefficient__(self, block):
+        first_c = block.max()
+        secont_c = block.min()
+        block=block.ravel()
+        for c in block:
+            if c>secont_c and c != first_c:
+                secont_c = c
+
+        return first_c, secont_c
+
+    def __calculate_G__(self, all_blocks, count_block=1024):
+        sum_e_b_max = 0
+        for block in all_blocks:
+            f_c, s_c = self.__find_large_and_second_large_coefficient__(block)
+            e_b_max = f_c - s_c
+            sum_e_b_max += e_b_max
+
+        G = sum_e_b_max / count_block
+        return G
+
+    def water_mark_bit_embed_in_sample_block(self, block, bit, G):
+        f_c, s_c = self.__find_large_and_second_large_coefficient__(block)
+        eb_max = f_c - s_c
+
+        if bit == 1:
+            if eb_max < max(G, self.T):
+                f_c = f_c + self.T / 2
+            else:
+                f_c = f_c - self.T / 2
+
+        else:
+            f_c = f_c - eb_max
+
+        block= block.astype(np.float)
+
+        for i in range(block.shape[0]):
+            for j in range(block.shape[1]):
+                if(block[i,j]==block.max()):
+                    block[i,j]=f_c
+                    break
+
+
+
+        return block
+
+    def __all_blocks__(self, hl2):
+        size = hl2.shape[0]
+        blocks = []
+        for i in range(0, size, 2):
+            for j in range(0, size, 2):
+                block = hl2[j:j + 2, i:i + 2]
+                blocks.append(block)
+        return blocks
+
+    def embed(self, f):
+        if f.shape[0] > 64 or f.shape[1] > 64:
             hl2 = self.__extract_hl2_area__(f)
 
-        print(f)
+        hl2_res=hl2.copy()
+        hl2_res=hl2_res.astype(np.float)
 
 
+        blocks = self.__all_blocks__(hl2)
+        G = self.__calculate_G__(blocks)
 
-if __name__ == '__main__':
-    mat=np.random.randint(0, 5, size=(256,256))
+        size = hl2.shape[0]
+        # number_bit=0
+        for i in range(0, size, 2):
+            for j in range(0, size, 2):
+                block = hl2[j:j + 2, i:i + 2]
+                bit = next(self.iter_water)
 
-    emb= WatermarkEmbedding(GenerateBinaryWaterMark.water_mark())
+                # print(f"бит водяного знака {bit} номер {number_bit}")
+                # number_bit+=1
+                block_with_water_mark = self.water_mark_bit_embed_in_sample_block(block, bit, G)
 
-    emb.embed(mat)
+                hl2_res[j:j + 2, i:i + 2]=block_with_water_mark
 
+        f_res=self.__insert_hl2_inF__(f,hl2_res)
+
+        return  f_res

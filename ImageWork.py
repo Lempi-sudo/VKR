@@ -15,7 +15,6 @@ class LoadNamesImage:
                 self.countImage += 1
             return image_name_list
 
-
 class LoadImage:
     def __init__(self, name_image_list: list):
         self.name_image_list = name_image_list
@@ -30,3 +29,14 @@ class LoadImage:
         else:
             raise StopIteration
         return image_numpy
+
+class LoadWaterMark():
+
+    @staticmethod
+    def load(path , treshold=180):
+        water_mark = imread(path)
+        water_mark[water_mark < treshold] = 0
+        water_mark[water_mark >= treshold] = 1
+        water_mark = water_mark.ravel()
+        return water_mark
+
