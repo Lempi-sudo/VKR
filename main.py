@@ -30,7 +30,9 @@ if __name__ == '__main__':
 
     try:
         while True:
+
             image = load_image.next_image()
+            copy_image=image.copy()
 
             CA, CH, CV, CD = mat_lab_lwt2.lwt2(image)
 
@@ -46,12 +48,14 @@ if __name__ == '__main__':
 
             img = Image.fromarray(image_np.astype(np.uint8))
 
-            name_image = "CW" + str(number_image)
-            if (os.path.exists(rf"Image With WakterMark/{name_image}.tif")):
-                os.remove(rf"Image With WaterMark/{name_image}.tif")
-            img.save(rf"Image With WaterMark/{name_image}.tif")
-            img.close()
-            number_image += 1
+            test_image=copy_image-image_np
+
+            # name_image = "CW" + str(number_image)
+            # if (os.path.exists(rf"Image With WakterMark/{name_image}.tif")):
+            #     os.remove(rf"Image With WaterMark/{name_image}.tif")
+            # img.save(rf"Image With WaterMark/{name_image}.tif")
+            # img.close()
+            # number_image += 1
 
             print(f"картинок обработано {i}")
             i += 1
