@@ -37,6 +37,10 @@ class LoadWaterMark():
         water_mark = imread(path)
         water_mark[water_mark < treshold] = 0
         water_mark[water_mark >= treshold] = 1
-        water_mark = water_mark.ravel()
-        return water_mark
+        water_markr_res = water_mark[0:32, 0:32]
+        water_markr_res = water_markr_res.ravel()
+
+
+
+        return water_markr_res
 

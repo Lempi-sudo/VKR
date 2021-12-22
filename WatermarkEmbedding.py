@@ -12,7 +12,6 @@ class WatermarkEmbedding:
     def __init__(self, w, T=0.46):
         self.W = w
         self.T = T
-        self.iter_water = iter(self.W)
 
     def __extract_hl2_area__(self, f, intex=(128, 192, 64, 128)):
         hl2 = f[intex[0]:intex[1], intex[2]:intex[3]]
@@ -77,6 +76,7 @@ class WatermarkEmbedding:
         return blocks
 
     def embed(self, f):
+        iter_water = iter(self.W)
         if f.shape[0] > 64 or f.shape[1] > 64:
             hl2 = self.__extract_hl2_area__(f)
 
@@ -92,8 +92,10 @@ class WatermarkEmbedding:
         for i in range(0, size, 2):
             for j in range(0, size, 2):
                 block = hl2[j:j + 2, i:i + 2]
-                bit = next(self.iter_water)
-
+                try:
+                    bit = next(iter_water)
+                except StopIteration:
+                    print("кончился водяной знак")
                 # print(f"бит водяного знака {bit} номер {number_bit}")
                 # number_bit+=1
                 block_with_water_mark = self.water_mark_bit_embed_in_sample_block(block, bit, G)

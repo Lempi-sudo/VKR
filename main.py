@@ -44,17 +44,17 @@ if __name__ == '__main__':
 
             image_np = transformator.get_NP(sourse_image)
 
-            # img = Image.fromarray(image_np.astype(np.uint8))
-            #
-            # name_image = "CW" + str(number_image)
-            # if (os.path.exists(rf"Image With WaterMark/{name_image}.tif")):
-            #     os.remove(rf"Image With WaterMark/{name_image}.tif")
-            # img.save(rf"Image With WaterMark/{name_image}.tif")
-            # img.close()
-            # number_image += 1
-            #
-            # print(f"картинок обработано {i}")
-            # i += 1
+            img = Image.fromarray(image_np.astype(np.uint8))
+
+            name_image = "CW" + str(number_image)
+            if (os.path.exists(rf"Image With WakterMark/{name_image}.tif")):
+                os.remove(rf"Image With WaterMark/{name_image}.tif")
+            img.save(rf"Image With WaterMark/{name_image}.tif")
+            img.close()
+            number_image += 1
+
+            print(f"картинок обработано {i}")
+            i += 1
 
     except StopIteration:
         print("все изображения считаны")
