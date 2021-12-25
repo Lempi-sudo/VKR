@@ -12,12 +12,11 @@ def test(cv, res_cv):
     test = (cv == res_cv)
     return test
 
-
-if __name__ == '__main__':
-    water_mark = LoadWaterMark.load("Water Mark Image/wolfwater.jpg")  # считывание водяного знака
+def LWT2EmbedWaterMark(path_waterMark,path_dataSet,path_save_dir):
+    water_mark = LoadWaterMark.load(path_waterMark)  # считывание водяного знака
 
     load_name = LoadNamesImage()
-    path_name_image = load_name.get_list_image_name('TestDataSet')
+    path_name_image = load_name.get_list_image_name(path_dataSet)
 
     load_image = LoadImage(path_name_image)
 
@@ -32,7 +31,7 @@ if __name__ == '__main__':
         while True:
 
             image = load_image.next_image()
-            copy_image=image.copy()
+
 
             CA, CH, CV, CD = mat_lab_lwt2.lwt2(image)
 
@@ -48,14 +47,17 @@ if __name__ == '__main__':
 
             img = Image.fromarray(image_np.astype(np.uint8))
 
-            test_image=copy_image-image_np
 
-            # name_image = "CW" + str(number_image)
-            # if (os.path.exists(rf"Image With WakterMark/{name_image}.tif")):
-            #     os.remove(rf"Image With WaterMark/{name_image}.tif")
-            # img.save(rf"Image With WaterMark/{name_image}.tif")
-            # img.close()
-            # number_image += 1
+
+            name_image = "CW" + str(number_image)
+
+            path_save = rf"{path_save_dir}/{name_image}.tif"
+
+            if (os.path.exists(path_save)):
+                os.remove(path_save)
+            img.save(path_save)
+            img.close()
+            number_image += 1
 
             print(f"картинок обработано {i}")
             i += 1
@@ -71,3 +73,106 @@ if __name__ == '__main__':
         mat_lab_lwt2.exit_engine()
 
     print()
+
+def Test_LWT2Embed():
+
+    load_name = LoadNamesImage()
+    path_name_image = load_name.get_list_image_name('TestImagewithWaterMark')
+    load_image = LoadImage(path_name_image)
+    images_water_mark=[]
+    sourse_images_water_mark=[]
+
+    try:
+        while True:
+
+            image = load_image.next_image()
+
+            image2=image.copy()
+
+            sourse_images_water_mark.append(image2)
+            images_water_mark.append(image)
+
+    except StopIteration:
+        print("все изображения считаны")
+
+    except Exception:
+        print("ЧТО - ТО СЛУЧИЛОСЬ ")
+
+    finally:
+        print("Закончил создание массива картинок ")
+
+
+
+    load_name = LoadNamesImage()
+    path_name_image = load_name.get_list_image_name('TestImage')
+    load_image = LoadImage(path_name_image)
+    images = []
+    sourse_images = []
+
+    try:
+        while True:
+            image = load_image.next_image()
+            image3=image.copy()
+
+            sourse_images.append(image3)
+            images.append(image)
+
+    except StopIteration:
+        print("все изображения считаны")
+
+    except Exception:
+        print("ЧТО - ТО СЛУЧИЛОСЬ ")
+
+    finally:
+        print("Закончил создание массива картинок ")
+
+
+    diff_image=[]
+    for i in range(len(images)):
+        diff_image.append(images_water_mark[i]-image[i])
+
+
+    for im in diff_image:
+        im[im>100]=255
+
+
+    for i in range(len(images)):
+        images[i]=images[i]+diff_image[i]
+
+    number_image=1
+
+    for i in range(len(images)):
+        img=Image.fromarray(images[i].astype(np.uint8))
+
+        name_image = "diff" + str(number_image)
+
+        path_save = rf"DiffImage/{name_image}.tif"
+
+        if (os.path.exists(path_save)):
+            os.remove(path_save)
+        img.save(path_save)
+        img.close()
+        number_image += 1
+
+
+
+
+
+if __name__ == '__main__':
+    path_waterMark="Water Mark Image/crown32.jpg"
+    path_dataSet='TestDataSet'
+    path_save_dir='Image With WaterMark'
+
+    LWT2EmbedWaterMark(path_waterMark,path_dataSet,path_save_dir)
+
+
+
+
+
+
+
+
+
+
+
+
