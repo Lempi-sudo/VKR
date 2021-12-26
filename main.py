@@ -55,7 +55,7 @@ def LWT2EmbedWaterMark(path_waterMark,path_dataSet,path_save_dir):
 
             if (os.path.exists(path_save)):
                 os.remove(path_save)
-            img.save(path_save)
+            img.save(path_save , format="tif")
             img.close()
             number_image += 1
 
@@ -155,6 +155,47 @@ def Test_LWT2Embed():
         number_image += 1
 
 
+#Неточность может возникать в ilwt2 или в save()
+def test_lwt2_before_after_save(): #плохие тесты почему то разные значения для казалось бы одинаковых преобразованиях
+    water_mark = LoadWaterMark.load(path_waterMark)  # считывание водяного знака
+    image = imread("TestDataSet/Image00001.tif")
+    mat_lab_lwt2 = LiftingWaveletTransform()
+    transformator = Transform_Matlab_to_NP()
+    cheme_embedding = WatermarkEmbedding(water_mark)
+    CA, CH, CV, CD = mat_lab_lwt2.lwt2(image)
+    cv = transformator.get_NP(CV)
+    cv_copy=cv.copy()
+
+    cv_water = cheme_embedding.embed(cv)
+
+    cv_water_copy=cv_water.copy()
+
+    CV_water = transformator.get_MatLab_matrix(cv_water)
+
+    cwtilda = mat_lab_lwt2.ilwt2(CA, CH, CV_water, CD, )
+
+    cw_tilda_np=transformator.get_NP(cwtilda)
+
+    test_image=cw_tilda_np-image
+
+    CA2, CH2, CV2, CD2 = mat_lab_lwt2.lwt2(cwtilda)
+
+    cv_tilda = transformator.get_NP(CV2)
+
+    test=np.abs(cv_water_copy-cv_tilda)
+
+    print(test)
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -162,8 +203,10 @@ if __name__ == '__main__':
     path_waterMark="Water Mark Image/crown32.jpg"
     path_dataSet='TestDataSet'
     path_save_dir='Image With WaterMark'
+    test_lwt2_before_after_save()
 
-    LWT2EmbedWaterMark(path_waterMark,path_dataSet,path_save_dir)
+
+    #LWT2EmbedWaterMark(path_waterMark,path_dataSet,path_save_dir)
 
 
 
