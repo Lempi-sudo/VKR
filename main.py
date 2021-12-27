@@ -6,6 +6,7 @@ from WatermarkEmbedding import WatermarkEmbedding
 from ImageWork import LoadNamesImage, LoadImage, LoadWaterMark
 from MatLabCalculation import LiftingWaveletTransform, Transform_Matlab_to_NP
 from PIL import Image
+from AttackInImage import Attack
 
 
 
@@ -128,16 +129,10 @@ def MSE_image(x,y):
     e= (np.sum((x - y) ** 2)) / (len(x) * len(y[0]))
     return e
 
-
 def psnr(W, Wr):
  e = (np.sum((W - Wr) ** 2)) / (len(W) * len(W[0]))
  p = 10 * np.log10(255 ** 2 / e)
  return p
-
-
-
-
-
 
 
 def LWT2EmbedWaterMark(path_waterMark,path_dataSet,path_save_dir):
@@ -153,13 +148,10 @@ def LWT2EmbedWaterMark(path_waterMark,path_dataSet,path_save_dir):
     transformator = Transform_Matlab_to_NP()
 
     i = 0
-    number_image = 0
-
+    number_image = 1
     try:
         while True:
-
             image = load_image.next_image()
-
 
             CA, CH, CV, CD = mat_lab_lwt2.lwt2(image)
 
@@ -174,8 +166,6 @@ def LWT2EmbedWaterMark(path_waterMark,path_dataSet,path_save_dir):
             image_np = transformator.get_NP(sourse_image)
 
             img = Image.fromarray(image_np.astype(np.uint8))
-
-
 
             name_image = "CW" + str(number_image)
 
@@ -220,9 +210,11 @@ if __name__ == '__main__':
     path_dataSet='TestDataSet'
     path_save_dir='Image With WaterMark'
 
+    attack=Attack()
 
+    attack.median_attack(path_image='Image With WaterMark', path_image_attacked ='AttackedImage/medianAttack')
 
-    LWT2EmbedWaterMark(path_waterMark,path_dataSet,path_save_dir)
+    #LWT2EmbedWaterMark(path_waterMark,path_dataSet,path_save_dir)
 
 
 
