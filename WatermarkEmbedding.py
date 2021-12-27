@@ -9,7 +9,7 @@ class GenerateBinaryWaterMark:
 
 
 class WatermarkEmbedding:
-    def __init__(self, w, T=0.46):
+    def __init__(self, w, T=3.46):
         self.W = w
         self.T = T
 
@@ -71,7 +71,7 @@ class WatermarkEmbedding:
         blocks = []
         for i in range(0, size, 2):
             for j in range(0, size, 2):
-                block = hl2[j:j + 2, i:i + 2]
+                block = hl2[i:i + 2, j:j + 2]
                 blocks.append(block)
         return blocks
 
@@ -91,7 +91,7 @@ class WatermarkEmbedding:
         # number_bit=0
         for i in range(0, size, 2):
             for j in range(0, size, 2):
-                block = hl2[j:j + 2, i:i + 2]
+                block = hl2[i:i + 2, j:j + 2]
                 try:
                     bit = next(iter_water)
                 except StopIteration:
@@ -100,7 +100,7 @@ class WatermarkEmbedding:
                 # number_bit+=1
                 block_with_water_mark = self.water_mark_bit_embed_in_sample_block(block, bit, G)
 
-                hl2_res[j:j + 2, i:i + 2]=block_with_water_mark
+                hl2_res[i:i + 2, j:j + 2]=block_with_water_mark
 
         f_res=self.__insert_hl2_inF__(f,hl2_res)
 
