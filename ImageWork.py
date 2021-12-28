@@ -33,15 +33,17 @@ class LoadImage:
 class LoadWaterMark():
 
     @staticmethod
-    def load(path , treshold=180):
+    def load(path , treshold=100):
         water_mark = imread(path)
-        water_mark[water_mark < treshold] = 0
-        water_mark[water_mark >= treshold] = 1
+        water_mark0=water_mark[:,:,0]
+
+        water_mark0[water_mark0 < treshold] = 0
+        water_mark0[water_mark0 >= treshold] = 1
         if water_mark.shape[0] > 32:
             water_mark = water_mark[20:52, 31:63]
 
 
-        water_markr_res = water_mark.ravel()
+        water_markr_res = water_mark0.ravel()
 
 
 

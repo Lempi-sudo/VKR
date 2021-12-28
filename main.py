@@ -212,24 +212,26 @@ def LWT2EmbedWaterMark(path_waterMark,path_dataSet,path_save_dir):
 
 if __name__ == '__main__':
     path_waterMark="Water Mark Image/crown32.jpg"
-    path_dataSet='TrainDataSet'
-    path_save_water_mark_image='Image With WaterMark'
+    path_dataSet='DataSet'
+    path_save_water_mark_image='CW'
 
     WaterMark=LoadWaterMark.load(path_waterMark)
+    #LWT2EmbedWaterMark(path_waterMark, path_dataSet, path_save_water_mark_image)
 
-    attack=Attack()
 
-    attack.salt_peper_attack(path_image='Image With WaterMark', path_image_attacked ='AttackedImage/SaltPaperAttack',p=0.01)
+    # attack=Attack()
+    # attack.All_Attack()
 
     # path_dataSet_test='TestImage'
     # path_image_water_test='TestImageWaterMark'
-    # LWT2EmbedWaterMark(path_waterMark,path_dataSet_test,path_image_water_test)
-    #
-    #
-    # extract_feature = ImageFeature(WaterMark)
-    # path_save_feature_vec="feature_vec/test_data.txt"
-    # extract_feature.save_feature_data(path_save_feature_vec,path_image_water_test)
-    # extract_feature.close()
+
+
+
+    extract_feature = ImageFeature(WaterMark)
+    path_save_feature_vec="feature_vec/image_water_mark_dataset.txt"
+    path_image_water_test='CW'
+    extract_feature.save_feature_data(path_save_feature_vec,path_image_water_test)
+    extract_feature.close()
 
 
 
