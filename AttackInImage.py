@@ -6,9 +6,12 @@ import numpy as np
 from skimage.util import random_noise
 
 
+
+
+
 class Attack:
 
-    def median_attack(self, path_image, path_image_attacked, window=3):
+    def median_attack(self, path_image, path_image_attacked, window=(3,3)):
         load_name = LoadNamesImage()
         path_name_image = load_name.get_list_image_name(path_image)
         load_image = LoadImage(path_name_image)
@@ -33,13 +36,14 @@ class Attack:
                 img.close()
                 number_image += 1
 
-                print(f"картинок атаковано медианным фильтром {i}")
+                if i % 25 == 0:
+                    print(f"картинок атаковано медианным фильтром {i}")
                 i += 1
 
         except StopIteration:
             print("все изображения считаны")
 
-    def salt_peper_attack(self, path_image, path_image_attacked, p=0.1):
+    def salt_peper_attack(self, path_image, path_image_attacked, p=0.01):
         load_name = LoadNamesImage()
         path_name_image = load_name.get_list_image_name(path_image)
         load_image = LoadImage(path_name_image)
@@ -75,3 +79,12 @@ class Attack:
 
         except StopIteration:
             print("все изображения считаны")
+
+
+    def All_Attack(self):
+        image_path='CW'
+        image_attacked_salt_paper='AttackedImage/SaltPaperAttack'
+        image_attacked_median='AttackedImage/medianAttack'
+
+        self.median_attack(path_image=image_path , path_image_attacked=image_attacked_median )
+        self.salt_peper_attack(path_image=image_path , path_image_attacked= image_attacked_salt_paper)

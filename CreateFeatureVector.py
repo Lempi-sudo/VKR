@@ -34,11 +34,19 @@ class ImageFeature:
     def __all_blocks__(self, hl2):
         size = hl2.shape[0]
         blocks = []
-        for i in range(0, size, 2):
-            for j in range(0, size, 2):
-                block = hl2[i:i + 2, j:j + 2]
-                blocks.append(block)
+        # for i in range(0, size, 2):
+        #     for j in range(0, size, 2):
+        #         block = hl2[i:i + 2, j:j + 2]
+        #         blocks.append(block)
+
+        split=[ x for x in range(2,size,2) ]
+        list_split = np.array_split(hl2,indices_or_sections=split, axis=0)
+        for spl in list_split:
+            block=np.split(spl,indices_or_sections=split , axis=1)
+            blocks.extend(block)
         return blocks
+
+
 
     def save_feature_data(self, path_save, path_image):
         path_name_image = self.load_name.get_list_image_name(path_image)
