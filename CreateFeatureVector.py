@@ -47,7 +47,7 @@ class ImageFeature:
         i = 1
 
 
-        df = pd.DataFrame.from_dict({'bit': [], 'feature_vec': []})
+        df = pd.DataFrame.from_dict({'bit': [], 'feature_1': [],'feature_2': [],'feature_3': [],'feature_4': []})
         try:
             while True:
                 image = load_image.next_image()
@@ -61,12 +61,10 @@ class ImageFeature:
                 blocks = self.__all_blocks__(hl2)
 
                 iter_water = iter(self.water_mark)
-                bit_i=1
+
                 for block in blocks:
                     vec = np.ravel(block)
-                    print(f"bit_i {bit_i} ")
-                    bit_i+=1
-                    new_row = {'bit': next(iter_water), "feature_vec": vec}
+                    new_row = {'bit': next(iter_water), "feature_1": vec[0], "feature_2": vec[1], "feature_3": vec[2], "feature_4": vec[3]}
                     df=df.append(new_row, ignore_index=True)
 
                 print(f"векторов признаков сформировано {i}")
@@ -74,10 +72,15 @@ class ImageFeature:
 
 
 
+
+
+
+
         except StopIteration:
             print("все изображения считаны")
 
         df.to_csv(path_save)
+
 
     def close(self):
         self.mat_lab.exit_engine()

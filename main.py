@@ -8,6 +8,7 @@ from MatLabCalculation import LiftingWaveletTransform, Transform_Matlab_to_NP
 from PIL import Image
 from CreateFeatureVector import ImageFeature
 from AttackInImage import Attack
+from skimage.util import random_noise
 
 
 
@@ -137,6 +138,9 @@ def psnr(W, Wr):
 
 
 def LWT2EmbedWaterMark(path_waterMark,path_dataSet,path_save_dir):
+    ## Данная функция берет все изображения из директории path_dataSet
+    ## и встраивает туда водяной знак в область виевлет преобразования 3 уровня
+    ## и сохраняет в path_save_dir
     water_mark = LoadWaterMark.load(path_waterMark)  # считывание водяного знака
 
     load_name = LoadNamesImage()
@@ -208,22 +212,26 @@ def LWT2EmbedWaterMark(path_waterMark,path_dataSet,path_save_dir):
 
 if __name__ == '__main__':
     path_waterMark="Water Mark Image/crown32.jpg"
-    path_dataSet='TestDataSet'
+    path_dataSet='TrainDataSet'
     path_save_water_mark_image='Image With WaterMark'
 
     WaterMark=LoadWaterMark.load(path_waterMark)
-
+    #
     # attack=Attack()
     #
-    # attack.median_attack(path_image='Image With WaterMark', path_image_attacked ='AttackedImage/medianAttack')
-    #LWT2EmbedWaterMark(path_waterMark,path_dataSet,path_save_dir)
+    # attack.salt_peper_attack(path_image='Image With WaterMark', path_image_attacked ='AttackedImage/SaltPaperAttack',p=0.01)
+
+    path_dataSet_test='TestImage'
+    path_image_water_test='TestImageWaterMark'
+    LWT2EmbedWaterMark(path_waterMark,path_dataSet_test,path_image_water_test)
+
 
     extract_feature = ImageFeature(WaterMark)
-
-
-    path_save_feature_vec="feature_vec/Image_with_water.txt"
-    extract_feature.save_feature_data(path_save_feature_vec,path_save_water_mark_image)
+    path_save_feature_vec="feature_vec/test_data.txt"
+    extract_feature.save_feature_data(path_save_feature_vec,path_image_water_test)
     extract_feature.close()
+
+
 
 
 
