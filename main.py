@@ -6,6 +6,7 @@ from WatermarkEmbedding import WatermarkEmbedding
 from ImageWork import LoadNamesImage, LoadImage, LoadWaterMark
 from MatLabCalculation import LiftingWaveletTransform, Transform_Matlab_to_NP
 from PIL import Image
+from CreateFeatureVector import ImageFeature
 from AttackInImage import Attack
 
 
@@ -208,17 +209,21 @@ def LWT2EmbedWaterMark(path_waterMark,path_dataSet,path_save_dir):
 if __name__ == '__main__':
     path_waterMark="Water Mark Image/crown32.jpg"
     path_dataSet='TestDataSet'
-    path_save_dir='Image With WaterMark'
+    path_save_water_mark_image='Image With WaterMark'
 
-    attack=Attack()
+    WaterMark=LoadWaterMark.load(path_waterMark)
 
-    attack.median_attack(path_image='Image With WaterMark', path_image_attacked ='AttackedImage/medianAttack')
-
+    # attack=Attack()
+    #
+    # attack.median_attack(path_image='Image With WaterMark', path_image_attacked ='AttackedImage/medianAttack')
     #LWT2EmbedWaterMark(path_waterMark,path_dataSet,path_save_dir)
 
+    extract_feature = ImageFeature(WaterMark)
 
 
-
+    path_save_feature_vec="feature_vec/Image_with_water.txt"
+    extract_feature.save_feature_data(path_save_feature_vec,path_save_water_mark_image)
+    extract_feature.close()
 
 
 
