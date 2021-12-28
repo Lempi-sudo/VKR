@@ -216,20 +216,20 @@ if __name__ == '__main__':
     path_save_water_mark_image='Image With WaterMark'
 
     WaterMark=LoadWaterMark.load(path_waterMark)
+
+    attack=Attack()
+
+    attack.salt_peper_attack(path_image='Image With WaterMark', path_image_attacked ='AttackedImage/SaltPaperAttack',p=0.01)
+
+    # path_dataSet_test='TestImage'
+    # path_image_water_test='TestImageWaterMark'
+    # LWT2EmbedWaterMark(path_waterMark,path_dataSet_test,path_image_water_test)
     #
-    # attack=Attack()
     #
-    # attack.salt_peper_attack(path_image='Image With WaterMark', path_image_attacked ='AttackedImage/SaltPaperAttack',p=0.01)
-
-    path_dataSet_test='TestImage'
-    path_image_water_test='TestImageWaterMark'
-    LWT2EmbedWaterMark(path_waterMark,path_dataSet_test,path_image_water_test)
-
-
-    extract_feature = ImageFeature(WaterMark)
-    path_save_feature_vec="feature_vec/test_data.txt"
-    extract_feature.save_feature_data(path_save_feature_vec,path_image_water_test)
-    extract_feature.close()
+    # extract_feature = ImageFeature(WaterMark)
+    # path_save_feature_vec="feature_vec/test_data.txt"
+    # extract_feature.save_feature_data(path_save_feature_vec,path_image_water_test)
+    # extract_feature.close()
 
 
 

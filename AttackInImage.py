@@ -8,13 +8,13 @@ from skimage.util import random_noise
 
 class Attack:
 
-    def median_attack(self, path_image, path_image_attacked,window=3):
+    def median_attack(self, path_image, path_image_attacked, window=3):
         load_name = LoadNamesImage()
         path_name_image = load_name.get_list_image_name(path_image)
         load_image = LoadImage(path_name_image)
 
-        number_image=1
-        i=1
+        number_image = 1
+        i = 1
 
         try:
             while True:
@@ -39,7 +39,6 @@ class Attack:
         except StopIteration:
             print("все изображения считаны")
 
-
     def salt_peper_attack(self, path_image, path_image_attacked, p=0.1):
         load_name = LoadNamesImage()
         path_name_image = load_name.get_list_image_name(path_image)
@@ -56,11 +55,8 @@ class Attack:
 
                 bad_image = image.copy()
 
-                for index, x in np.ndenumerate(image):
-                    if noise[index] == -1:
-                        bad_image[index] = 0
-                    if noise[index] == 1:
-                        bad_image[index] = 255
+                bad_image[noise == -1] = 0
+                bad_image[noise == 1] = 255
 
                 img = Image.fromarray(bad_image.astype(np.uint8))
                 name_image = "SaltPaperAttackedImage" + str(number_image)
@@ -73,15 +69,9 @@ class Attack:
                 img.close()
                 number_image += 1
 
-                print(f"картинок атаковано соль-перец {i}")
+                if (i % 25 == 0):
+                    print(f"картинок атаковано соль-перец {i}")
                 i += 1
 
         except StopIteration:
             print("все изображения считаны")
-
-
-
-
-
-
-

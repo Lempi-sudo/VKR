@@ -101,11 +101,16 @@ def filterImpulse(p):
 
     bad_board = board.copy()
 
+    bad_board2=board.copy()
+
     for index,x in np.ndenumerate(board):
         if noise[index] == -1:
             bad_board[index]=0
         if noise[index] == 1:
             bad_board[index] = 1
+
+    bad_board2[noise == -1] = 0
+    bad_board2[noise == 1] = 2
 
     noise_dis = np.nanvar(noise)
     print("Дисперсия  шума", noise_dis)
@@ -153,7 +158,7 @@ N = 128
 cell = 16
 
 
-filterAddNoise(10)
-filterAddNoise(1)
+#filterAddNoise(10)
+#filterAddNoise(1)
 filterImpulse(0.1)
 filterImpulse(0.3)
