@@ -158,7 +158,7 @@ N = 128
 cell = 16
 
 
-#filterAddNoise(10)
-#filterAddNoise(1)
+filterAddNoise(10)
+filterAddNoise(1)
 filterImpulse(0.1)
 filterImpulse(0.3)
