@@ -214,12 +214,11 @@ if __name__ == '__main__':
     path_waterMark="Water Mark Image/crown32.jpg"
     path_dataSet='DataSet'
     path_save_water_mark_image='CW'
-    image_path = 'CW'
 
-    image_attacked = 'AttackedImage/JPEG50'
+
 
     attack=Attack()
-    attack.Save_JPEG(image_path,image_attacked,50)
+    attack.All_Attack()
 
 
 
