@@ -53,9 +53,7 @@ class ImageFeature:
         load_image = LoadImage(path_name_image)
 
         i = 1
-
-
-        df = pd.DataFrame.from_dict({'bit': [], 'feature_1': [],'feature_2': [],'feature_3': [],'feature_4': []})
+        listrow = []
         try:
             while True:
                 image = load_image.next_image()
@@ -73,19 +71,16 @@ class ImageFeature:
                 for block in blocks:
                     vec = np.ravel(block)
                     new_row = {'bit': next(iter_water), "feature_1": vec[0], "feature_2": vec[1], "feature_3": vec[2], "feature_4": vec[3]}
-                    df=df.append(new_row, ignore_index=True)
-
+                    listrow.append(new_row)
                 print(f"векторов признаков сформировано {i}")
                 i += 1
 
 
-
-
-
-
-
         except StopIteration:
             print("все изображения считаны")
+
+        columns = ['bit', 'feature_1', 'feature_2', 'feature_3', 'feature_4']
+        df = pd.DataFrame(data= listrow,  columns=columns)
 
         df.to_csv(path_save)
 
