@@ -191,14 +191,56 @@ class Attack:
         except StopIteration:
             print("все изображения считаны")
 
+    def Save_JPEG(self, path_image, path_image_attacked, QF):
+        load_name = LoadNamesImage()
+        path_name_image = load_name.get_list_image_name(path_image)
+        load_image = LoadImage(path_name_image)
+
+        number_image = 1
+        i = 1
+
+        try:
+            while True:
+                image = load_image.next_image()
+
+                img = Image.fromarray(image.astype(np.uint8))
+                name_image = "Save_JPEG" + str(number_image)
+
+                path_save = rf"{path_image_attacked}/{name_image}.jpeg"
+
+                if (os.path.exists(path_save)):
+                    os.remove(path_save)
+                img.save(path_save, quality=QF)
+                img.close()
+                number_image += 1
+
+                if (i % 25 == 0):
+                    print(f"картинок атаковано jpeg сжатием {i}")
+                i += 1
+
+        except StopIteration:
+            print("все изображения считаны")
+
+
     def All_Attack(self):
         image_path='CW'
         image_attacked_salt_paper='AttackedImage/SaltPaperAttack'
         image_attacked_median='AttackedImage/medianAttack'
         image_attacked_average = 'AttackedImage/AverageAttack'
+        image_save_jpeg20 = 'AttackedImage/JPEG20'
+        image_save_jpeg30 = 'AttackedImage/JPEG30'
+        image_save_jpeg40 = 'AttackedImage/JPEG40'
+        image_save_jpeg50 = 'AttackedImage/JPEG50'
+
         image_Gaussian_Filter_attack = 'AttackedImage/GaussianFilterАttack'
+
 
         self.median_attack(path_image=image_path , path_image_attacked=image_attacked_median )
         self.salt_peper_attack(path_image=image_path , path_image_attacked= image_attacked_salt_paper)
         self.average_filter(path_image=image_path, path_image_attacked=image_attacked_average)
+        self.Save_JPEG(image_path, image_save_jpeg20, 20)
+        self.Save_JPEG(image_path, image_save_jpeg30, 30)
+        self.Save_JPEG(image_path, image_save_jpeg40, 40)
+        self.Save_JPEG(image_path, image_save_jpeg50, 50)
+
         #self.Gaussian_attack(path_image=image_path, path_image_attacked=image_Gaussian_attack) НЕ РАБОТАЕТ
