@@ -43,9 +43,9 @@ class LoadWaterMark():
             water_mark = water_mark[20:52, 31:63]
 
 
-        water_markr_res = water_mark0.ravel()
+        #water_markr_res = water_mark0.ravel()
 
 
 
-        return water_markr_res
+        return water_mark0
 

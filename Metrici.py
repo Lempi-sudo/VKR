@@ -132,3 +132,7 @@ def psnr(W, Wr):
  p = 10 * np.log10(255 ** 2 / e)
  return p
 
+
+
+
+

@@ -9,6 +9,7 @@ from PIL import Image
 from CreateFeatureVector import ImageFeature
 from AttackInImage import Attack
 from skimage.util import random_noise
+from Metrici import psnr
 
 
 def LWT2EmbedWaterMark(path_waterMark, path_dataSet, path_save_dir):
@@ -104,7 +105,14 @@ if __name__ == '__main__':
     path_dataSet = 'DataSet'
     path_save_water_mark_image = 'CW'
 
-    all_feature()
+    path_W_tilda="W_Tilda/histogram.tif"
+
+    w_tilda=imread(path_W_tilda)
+    w_tilda[w_tilda < 100] = 0
+    w_tilda[w_tilda >= 100] = 1
+    w=LoadWaterMark.load(path_waterMark)
+    print(psnr(w_tilda,w))
+
 
     #LWT2EmbedWaterMark(path_waterMark, path_dataSet, path_save_water_mark_image)
 
