@@ -104,7 +104,6 @@ if __name__ == '__main__':
     path_waterMark = "Water Mark Image/dota2.jpg"
     path_dataSet = 'DataSet'
     path_save_water_mark_image = 'CW'
-
     path_W_tilda="W_Tilda/histogram.tif"
 
     w_tilda=imread(path_W_tilda)
