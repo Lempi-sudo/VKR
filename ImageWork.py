@@ -33,9 +33,9 @@ class ImageLoader:
         return image_numpy
 
 
-class WaterMarkLoader():
+class WaterMarkLoader:
     @staticmethod
-    def load(path, treshold=100, right_size_watermark=32):
+    def load(path, threshold=100, right_size_watermark=32):
         try:
             water_mark = imread(path)
             if water_mark.shape[0] != right_size_watermark or water_mark.shape[1] != right_size_watermark:
@@ -43,8 +43,8 @@ class WaterMarkLoader():
                                      water_mark.shape[1])
             if water_mark.shape[2] != 1:
                 water_mark = water_mark[:, :, 0]
-                water_mark[water_mark < treshold] = 0
-                water_mark[water_mark >= treshold] = 1
+                water_mark[water_mark < threshold] = 0
+                water_mark[water_mark >= threshold] = 1
         except WaterMarkWrong as e:
             print(e)
             raise SystemExit(1)
