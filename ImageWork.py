@@ -1,12 +1,14 @@
 import os
 from skimage.io import imread
+from  ExceptionsModule import WaterMarkWrong
 
 
-class LoadNamesImage:
+
+class ImagesNamesLoader:
     def __init__(self):
         self.countImage = 0
 
-    def get_list_image_name(self, directory_name: str):
+    def get_image_name_list(self, directory_name: str):
         image_name_list = []
         for dirpath, dirnames, filenames in os.walk(directory_name):
             for filename in filenames:
@@ -15,7 +17,9 @@ class LoadNamesImage:
                 self.countImage += 1
             return image_name_list
 
-class LoadImage:
+
+
+class ImageLoader:
     def __init__(self, name_image_list: list):
         self.name_image_list = name_image_list
         self.cont_image = len(name_image_list)
@@ -30,22 +34,24 @@ class LoadImage:
             raise StopIteration
         return image_numpy
 
-class LoadWaterMark():
 
+
+class WaterMarkLoader():
     @staticmethod
-    def load(path , treshold=100):
-        water_mark = imread(path)
-        water_mark0=water_mark[:,:,0]
+    def load(path , treshold=100 , right_size_watermark = 32):
+        try:
+            water_mark = imread(path)
+            if water_mark.shape[0] != right_size_watermark or water_mark.shape[1] != right_size_watermark:
+                raise WaterMarkWrong("Неправильный  водяной знак", right_size_watermark , water_mark.shape[0], water_mark.shape[1])
+            if water_mark.shape[2] != 1:
+                water_mark=water_mark[:,:,0]
+                water_mark[water_mark < treshold] = 0
+                water_mark[water_mark >= treshold] = 1
+        except WaterMarkWrong as e:
+            print(e)
+            raise SystemExit(1)
+        return water_mark
 
-        water_mark0[water_mark0 < treshold] = 0
-        water_mark0[water_mark0 >= treshold] = 1
-        if water_mark.shape[0] > 32:
-            water_mark = water_mark[20:52, 31:63]
 
 
-        #water_markr_res = water_mark0.ravel()
-
-
-
-        return water_mark0
 

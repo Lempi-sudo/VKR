@@ -2,15 +2,15 @@ import numpy as np
 from skimage.io import imread
 import os
 from WatermarkEmbedding import WatermarkEmbedding
-from ImageWork import LoadNamesImage, LoadImage, LoadWaterMark
+from ImageWork import ImagesNamesLoader, ImageLoader, WaterMarkLoader
 from MatLabCalculation import LiftingWaveletTransform, Transform_Matlab_to_NP
 from PIL import Image
 
 
 
 #Неточность может возникать в ilwt2 или в save()
-def test_lwt2_before_after_save(): #плохие тесты почему то разные значения для казалось бы одинаковых преобразованиях
-    water_mark = LoadWaterMark.load(path_waterMark)  # считывание водяного знака
+def test_lwt2_before_after_save(path_waterMark): #плохие тесты почему то разные значения для казалось бы одинаковых преобразования
+    water_mark = WaterMarkLoader.load(path_waterMark)  # считывание водяного знака
     image = imread("TestDataSet/Image00001.tif")
     mat_lab_lwt2 = LiftingWaveletTransform()
     transformator = Transform_Matlab_to_NP()
@@ -41,9 +41,9 @@ def test_lwt2_before_after_save(): #плохие тесты почему то р
 
 def Test_LWT2Embed():
 
-    load_name = LoadNamesImage()
+    load_name = ImagesNamesLoader()
     path_name_image = load_name.get_list_image_name('TestImagewithWaterMark')
-    load_image = LoadImage(path_name_image)
+    load_image = ImageLoader(path_name_image)
     images_water_mark=[]
     sourse_images_water_mark=[]
 
@@ -68,9 +68,9 @@ def Test_LWT2Embed():
 
 
 
-    load_name = LoadNamesImage()
+    load_name = ImagesNamesLoader()
     path_name_image = load_name.get_list_image_name('TestImage')
-    load_image = LoadImage(path_name_image)
+    load_image = ImageLoader(path_name_image)
     images = []
     sourse_images = []
 

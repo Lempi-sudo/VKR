@@ -3,7 +3,7 @@ from skimage.io import imread
 import matlab
 import os
 from WatermarkEmbedding import WatermarkEmbedding
-from ImageWork import LoadNamesImage, LoadImage, LoadWaterMark
+from ImageWork import ImagesNamesLoader, ImageLoader, WaterMarkLoader
 from MatLabCalculation import LiftingWaveletTransform, Transform_Matlab_to_NP
 from PIL import Image
 from CreateFeatureVector import ImageFeature
@@ -16,12 +16,12 @@ def LWT2EmbedWaterMark(path_waterMark, path_dataSet, path_save_dir):
     ## Данная функция берет все изображения из директории path_dataSet
     ## и встраивает туда водяной знак в область виевлет преобразования 3 уровня
     ## и сохраняет в path_save_dir
-    water_mark = LoadWaterMark.load(path_waterMark)  # считывание водяного знака
+    water_mark = WaterMarkLoader.load(path_waterMark)  # считывание водяного знака
 
-    load_name = LoadNamesImage()
-    path_name_image = load_name.get_list_image_name(path_dataSet)
+    load_name = ImagesNamesLoader()
+    path_name_image = load_name.get_image_name_list(path_dataSet)
 
-    load_image = LoadImage(path_name_image)
+    load_image = ImageLoader(path_name_image)
 
     mat_lab_lwt2 = LiftingWaveletTransform()
     scheme_embedding = WatermarkEmbedding(water_mark)
@@ -83,7 +83,7 @@ def create_feature(path_save_feature_vec_arg, path_image_water_arg, water_mark_a
 
 def all_feature():
     pathwaterMark = "Water Mark Image/dota2.jpg"
-    water_mark = LoadWaterMark.load(pathwaterMark)
+    water_mark = WaterMarkLoader.load(pathwaterMark)
     path_save_water_mark_image = 'CW'
 
     create_feature("feature_vec/AverageAttack.txt", "AttackedImage/AverageAttack", water_mark)
@@ -101,7 +101,7 @@ def all_attack():
 
 
 if __name__ == '__main__':
-    path_waterMark = "Water Mark Image/dota2.jpg"
+    path_waterMark = "Water Mark Image/waterMark1.jpg"
     path_dataSet = 'DataSet'
     path_save_water_mark_image = 'CW'
     path_W_tilda="W_Tilda/histogram.tif"
@@ -109,7 +109,7 @@ if __name__ == '__main__':
     w_tilda=imread(path_W_tilda)
     w_tilda[w_tilda < 100] = 0
     w_tilda[w_tilda >= 100] = 1
-    w=LoadWaterMark.load(path_waterMark)
+    w=WaterMarkLoader.load(path_waterMark)
     print(psnr(w_tilda,w))
 
 

@@ -1,5 +1,5 @@
 from scipy.ndimage import median_filter
-from ImageWork import LoadNamesImage, LoadImage, LoadWaterMark
+from ImageWork import ImagesNamesLoader, ImageLoader, WaterMarkLoader
 import os
 from PIL import Image
 import numpy as np
@@ -24,7 +24,7 @@ class ImageFeature:
     def __init__(self, water_mark):
         self.water_mark = water_mark
         self.mat_lab = LiftingWaveletTransform()
-        self.load_name = LoadNamesImage()
+        self.load_name = ImagesNamesLoader()
         self.transformator = Transform_Matlab_to_NP()
 
     def __extract_hl2_area__(self, f, intex=(128, 192, 64, 128)):
@@ -50,7 +50,7 @@ class ImageFeature:
 
     def save_feature_data(self, path_save, path_image):
         path_name_image = self.load_name.get_list_image_name(path_image)
-        load_image = LoadImage(path_name_image)
+        load_image = ImageLoader(path_name_image)
 
         i = 1
         listrow = []

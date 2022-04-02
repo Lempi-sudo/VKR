@@ -1,6 +1,6 @@
 import matlab.engine
 import numpy as np
-from ImageWork import LoadNamesImage, LoadImage
+from ImageWork import ImagesNamesLoader, ImageLoader
 from skimage.io import imread
 import matlab
 import pandas as pd

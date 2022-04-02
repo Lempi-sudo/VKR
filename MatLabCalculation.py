@@ -4,7 +4,6 @@ import matlab
 
 
 class LiftingWaveletTransform:
-
     def __init__(self):
         self.eng = matlab.engine.start_matlab()
         self.CA = 0
