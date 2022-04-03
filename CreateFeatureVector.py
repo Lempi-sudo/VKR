@@ -49,7 +49,7 @@ class ImageFeature:
 
 
     def save_feature_data(self, path_save, path_image):
-        path_name_image = self.load_name.get_list_image_name(path_image)
+        path_name_image = self.load_name.get_image_name_list(path_image)
         load_image = ImageLoader(path_name_image)
 
         i = 1
