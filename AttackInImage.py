@@ -8,23 +8,19 @@ import cv2
 from scipy.ndimage import gaussian_filter
 
 
-
-
-
-
 class Attack:
     # хз как это должно работать , пока не использую
     def Crop(self, path_image, path_image_attacked, p):
-        load_name = ImagesNamesLoader()
-        path_name_image = load_name.get_list_image_name(path_image)
-        load_image = ImageLoader(path_name_image)
+        images_name_loader = ImagesNamesLoader()
+        path_image_list = images_name_loader.get_image_name_list(path_image)
+        image_loader = ImageLoader(path_image_list)
 
         number_image = 1
         i = 1
 
         try:
             while True:
-                image = load_image.next_image()
+                image = image_loader.next_image()
                 width, height = image.shape
                 image = Image.fromarray(image.astype(np.uint8))
 
@@ -53,18 +49,19 @@ class Attack:
 
         except StopIteration:
             print("все изображения считаны")
+
     # НЕ РАБОТАЕТ
     def Gaussian_noise_attack(self, path_image, path_image_attacked, p=0.01):
-        load_name = ImagesNamesLoader()
-        path_name_image = load_name.get_list_image_name(path_image)
-        load_image = ImageLoader(path_name_image)
+        image_name_loader = ImagesNamesLoader()
+        path_image_list = image_name_loader.get_image_name_list(path_image)
+        image_loader = ImageLoader(path_image_list)
 
         number_image = 1
         i = 1
 
         try:
             while True:
-                image = load_image.next_image()
+                image = image_loader.next_image()
 
                 bad_image_norm = random_noise(np.full(image.shape, -1), mode='gaussian', var=0.01)
 
@@ -90,10 +87,11 @@ class Attack:
 
         except StopIteration:
             print("все изображения считаны")
+
     # Работает но не понятно правильно ли ?
     def Gaussian_filter_attack(self, path_image, path_image_attacked, window=3):
         load_name = ImagesNamesLoader()
-        path_name_image = load_name.get_list_image_name(path_image)
+        path_name_image = load_name.get_image_name_list(path_image)
         load_image = ImageLoader(path_name_image)
 
         number_image = 1
@@ -128,13 +126,10 @@ class Attack:
             print("все изображения считаны")
 
 
-
-
-
-
+    #Работает!!! , но уже не помню как :)=
     def median_attack(self, path_image, path_image_attacked, window=(3,3)):
         load_name = ImagesNamesLoader()
-        path_name_image = load_name.get_list_image_name(path_image)
+        path_name_image = load_name.get_image_name_list(path_image)
         load_image = ImageLoader(path_name_image)
 
         number_image = 1
@@ -163,9 +158,10 @@ class Attack:
 
         except StopIteration:
             print("все изображения считаны")
+
     def salt_peper_attack(self, path_image, path_image_attacked, p=0.01):
         load_name = ImagesNamesLoader()
-        path_name_image = load_name.get_list_image_name(path_image)
+        path_name_image = load_name.get_image_name_list(path_image)
         load_image = ImageLoader(path_name_image)
 
         number_image = 1
@@ -199,9 +195,10 @@ class Attack:
 
         except StopIteration:
             print("все изображения считаны")
+
     def average_filter(self,path_image, path_image_attacked, window=3):
         load_name = ImagesNamesLoader()
-        path_name_image = load_name.get_list_image_name(path_image)
+        path_name_image = load_name.get_image_name_list(path_image)
         load_image = ImageLoader(path_name_image)
 
         number_image = 1
@@ -231,9 +228,10 @@ class Attack:
 
         except StopIteration:
             print("все изображения считаны")
+
     def Save_JPEG(self, path_image, path_image_attacked, QF):
         load_name = ImagesNamesLoader()
-        path_name_image = load_name.get_list_image_name(path_image)
+        path_name_image = load_name.get_image_name_list(path_image)
         load_image = ImageLoader(path_name_image)
 
         number_image = 1
@@ -260,9 +258,10 @@ class Attack:
 
         except StopIteration:
             print("все изображения считаны")
+
     def Histogram(self, path_image, path_image_attacked):
         load_name = ImagesNamesLoader()
-        path_name_image = load_name.get_list_image_name(path_image)
+        path_name_image = load_name.get_image_name_list(path_image)
         load_image = ImageLoader(path_name_image)
 
         number_image = 1
@@ -304,9 +303,10 @@ class Attack:
 
         except StopIteration:
             print("все изображения считаны")
+
     def Gamma_Correction(self , path_image, path_image_attacked, gamma=1.6):
         load_name = ImagesNamesLoader()
-        path_name_image = load_name.get_list_image_name(path_image)
+        path_name_image = load_name.get_image_name_list(path_image)
         load_image = ImageLoader(path_name_image)
 
         number_image = 1
@@ -338,9 +338,10 @@ class Attack:
 
         except StopIteration:
             print("все изображения считаны")
+
     def Sharpness(self, path_image, path_image_attacked):
         load_name = ImagesNamesLoader()
-        path_name_image = load_name.get_list_image_name(path_image)
+        path_name_image = load_name.get_image_name_list(path_image)
         load_image = ImageLoader(path_name_image)
 
         number_image = 1
@@ -389,15 +390,11 @@ class Attack:
         Gamma_Correction = 'AttackedImage/GammaCorrection'
         Sharpness = 'AttackedImage/Sharpness'
 
-
-
-
         self.median_attack(path_image=image_path , path_image_attacked=image_attacked_median )
         self.salt_peper_attack(path_image=image_path , path_image_attacked= image_attacked_salt_paper)
         self.average_filter(path_image=image_path, path_image_attacked=image_attacked_average)
         self.Save_JPEG(image_path, image_save_jpeg50, 50)
         self.Histogram(image_path,image_histogram)
-
         self.Gamma_Correction(image_path, Gamma_Correction)
         self.Sharpness(image_path, Sharpness)
 
