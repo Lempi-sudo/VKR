@@ -12,6 +12,9 @@ from skimage.util import random_noise
 from Metrici import psnr
 
 
+def get_water_mark(path):
+    water_mark = WaterMarkLoader.load(path)
+    return water_mark
 
 
 def LWT2EmbedWaterMark(path_waterMark, path_dataSet, path_save_dir):
@@ -88,9 +91,6 @@ def create_feature(path_save_feature_vec_arg, path_image_water_arg, water_mark_a
     extract_feature.save_feature_data(path_save_feature_vec, path_image_water)
     extract_feature.close()
 
-def get_water_mark(path):
-    water_mark = WaterMarkLoader.load(path)
-    return water_mark
 
 def all_feature():
     pathwaterMark = "Water Mark Image/dota2.jpg"
