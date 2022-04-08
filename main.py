@@ -17,7 +17,7 @@ if __name__ == '__main__':
     path_waterMark = "Water Mark Image/waterMark3.jpg" # путь до водяного знака3 (Дота2)
     path_dataSet = 'DataSet' # путь до набора картинок
     path_save_CW = 'Task1CW'
-    path_feature_vec= "feature_vec/Task1FeatureVec.txt"
+    path_feature_vec= "feature_vec/Task1/Task1FeatureVec.txt"
 
     Task1(path_waterMark, path_dataSet , path_save_CW ,path_feature_vec )
 

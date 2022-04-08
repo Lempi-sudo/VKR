@@ -110,4 +110,13 @@ def all_feature():
 #картинку с другим ЦВЗ и посмотреть на результат.
 def Task1(path_waterMark, path_dataSet, path_save_dir , path_feature_vector ):
     #LWT2EmbedWaterMark(path_waterMark, path_dataSet, path_save_dir)
-    create_feature(path_feature_vector, path_save_dir, get_water_mark(path_waterMark))
+    #create_feature(path_feature_vector, path_save_dir, get_water_mark(path_waterMark))
+
+
+    path_dataSet2 = 'DataSet/DataSetTask1'  # путь до набора картинок
+    path_save_CW2 = 'Task1CW/AnotherCW'
+    path_feature_vec2 = "feature_vec/anotherCWFearVec.txt"
+    water_mark_2=  "Water Mark Image/waterMark2.jpg"
+
+    LWT2EmbedWaterMark(water_mark_2, path_dataSet2, path_save_CW2)
+    create_feature(path_feature_vec2, path_save_CW2, get_water_mark(water_mark_2))
