@@ -1,16 +1,4 @@
-import numpy as np
-from skimage.io import imread
-import matlab
-import os
-
 from Tasks import Task1
-
-
-
-
-
-
-
 
 
 if __name__ == '__main__':
