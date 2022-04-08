@@ -115,7 +115,7 @@ def Task1(path_waterMark, path_dataSet, path_save_dir , path_feature_vector ):
 
     path_dataSet2 = 'DataSet/DataSetTask1'  # путь до набора картинок
     path_save_CW2 = 'Task1CW/AnotherCW'
-    path_feature_vec2 = "feature_vec/anotherCWFearVec.txt"
+    path_feature_vec2 = "feature_vec/Task1/anotherCWFearVec.txt"
     water_mark_2=  "Water Mark Image/waterMark2.jpg"
 
     LWT2EmbedWaterMark(water_mark_2, path_dataSet2, path_save_CW2)
