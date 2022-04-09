@@ -109,14 +109,31 @@ def all_feature():
 #1)	Обучить модель на 200 картинок с одним ЦВЗ и попробовать подсунуть обученной модели
 #картинку с другим ЦВЗ и посмотреть на результат.
 def Task1(path_waterMark, path_dataSet, path_save_dir , path_feature_vector ):
-    #LWT2EmbedWaterMark(path_waterMark, path_dataSet, path_save_dir)
-    #create_feature(path_feature_vector, path_save_dir, get_water_mark(path_waterMark))
+    LWT2EmbedWaterMark(path_waterMark, path_dataSet, path_save_dir)
+    create_feature(path_feature_vector, path_save_dir, get_water_mark(path_waterMark))
 
 
     path_dataSet2 = 'DataSet/DataSetTask1'  # путь до набора картинок
     path_save_CW2 = 'Task1CW/AnotherCW'
     path_feature_vec2 = "feature_vec/Task1/anotherCWFearVec.txt"
-    water_mark_2=  "Water Mark Image/waterMark2.jpg"
+    water_mark_2=  "Water Mark Image/waterMark1.jpg"
+
+    #LWT2EmbedWaterMark(water_mark_2, path_dataSet2, path_save_CW2)
+    #create_feature(path_feature_vec2, path_save_CW2, get_water_mark(water_mark_2))
+
+def Task2():
+    path_waterMark = "Water Mark Image/WhiteWaterMark3.jpg" # путь до водяного знака3 (Дота2)
+    path_dataSet = 'DataSet' # путь до набора картинок
+    path_save_CW = 'Task2CW'
+    path_feature_vec= "feature_vec/Task2/Task2FeatureVec.txt"
+
+    #LWT2EmbedWaterMark(path_waterMark, path_dataSet, path_save_CW)
+    #create_feature(path_feature_vec, path_save_CW, get_water_mark(path_waterMark))
+
+    path_dataSet2 = 'DataSet/Task2'  # путь до набора картинок
+    path_save_CW2 = 'Task2CW/AnotherCW'
+    path_feature_vec2 = "feature_vec/Task2/anotherCWFearVec.txt"
+    water_mark_2 = "Water Mark Image/waterMark1.jpg"
 
     LWT2EmbedWaterMark(water_mark_2, path_dataSet2, path_save_CW2)
     create_feature(path_feature_vec2, path_save_CW2, get_water_mark(water_mark_2))
