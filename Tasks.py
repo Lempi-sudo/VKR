@@ -32,7 +32,7 @@ def LWT2EmbedWaterMark(path_waterMark, path_dataSet, path_save_dir):
     scheme_embedding = WatermarkEmbedding(water_mark)
     transformator = Transform_Matlab_to_NP()
 
-    i = 0
+    i = 1
     number_image = 1
     try:
         while True:
@@ -122,7 +122,7 @@ def Task1(path_waterMark, path_dataSet, path_save_dir , path_feature_vector ):
     #create_feature(path_feature_vec2, path_save_CW2, get_water_mark(water_mark_2))
 
 def Task2():
-    path_waterMark = "Water Mark Image/WhiteWaterMark3.jpg" # путь до водяного знака3 (Дота2)
+    path_waterMark = "Water Mark Image/WhiteWaterMark.jpg"
     path_dataSet = 'DataSet' # путь до набора картинок
     path_save_CW = 'Task2CW'
     path_feature_vec= "feature_vec/Task2/Task2FeatureVec.txt"
