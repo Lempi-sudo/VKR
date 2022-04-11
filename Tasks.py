@@ -16,7 +16,6 @@ def get_water_mark(path):
     water_mark = WaterMarkLoader.load(path)
     return water_mark
 
-
 def LWT2EmbedWaterMark(path_waterMark, path_dataSet, path_save_dir):
     ## Данная функция берет все изображения из директории path_dataSet
     ## и встраивает туда водяной знак в область виевлет преобразования 3 уровня
@@ -91,7 +90,6 @@ def create_feature(path_save_feature_vec_arg, path_image_water_arg, water_mark_a
     extract_feature.save_feature_data(path_save_feature_vec, path_image_water)
     extract_feature.close()
 
-
 def all_feature():
     pathwaterMark = "Water Mark Image/dota2.jpg"
     water_mark = WaterMarkLoader.load(pathwaterMark)
@@ -121,6 +119,7 @@ def Task1(path_waterMark, path_dataSet, path_save_dir , path_feature_vector ):
     #LWT2EmbedWaterMark(water_mark_2, path_dataSet2, path_save_CW2)
     #create_feature(path_feature_vec2, path_save_CW2, get_water_mark(water_mark_2))
 
+#Task 2: Обучить на встроенной цвз с малым содержанием 0 - ых или малым количеством 1 -ых битов.
 def Task2():
     path_waterMark = "Water Mark Image/WhiteWaterMark.jpg"
     path_dataSet = 'DataSet' # путь до набора картинок
