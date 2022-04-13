@@ -138,6 +138,10 @@ def cv2PSRN(W, Wr):
     p=cv2.PSNR(W,Wr)
     return p
 
+#результат выдает побитовое сравнение в процентах насколько похожи два ЦВЗ
+def pobitovo_sravnenie_WaterMark(W1, W2 , total_bit=1024):
+    t1 = W1==W2
+    return t1.sum()/total_bit*100
 
 
 
