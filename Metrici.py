@@ -5,6 +5,7 @@ from WatermarkEmbedding import WatermarkEmbedding
 from ImageWork import ImagesNamesLoader, ImageLoader, WaterMarkLoader
 from MatLabCalculation import LiftingWaveletTransform, Transform_Matlab_to_NP
 from PIL import Image
+import cv2
 
 
 
@@ -132,6 +133,10 @@ def psnr(W, Wr):
  p = 10 * np.log10(255 ** 2 / e)
  return p
 
+
+def cv2PSRN(W, Wr):
+    p=cv2.PSNR(W,Wr)
+    return p
 
 
 
