@@ -41,8 +41,12 @@ class WaterMarkLoader:
             if water_mark.shape[0] != right_size_watermark or water_mark.shape[1] != right_size_watermark:
                 raise WaterMarkWrong("Неправильный  водяной знак", right_size_watermark, water_mark.shape[0],
                                      water_mark.shape[1])
-            if water_mark.shape[2] != 1:
-                water_mark = water_mark[:, :, 0]
+            if len(water_mark.shape)==3:
+                if water_mark.shape[2] != 1:
+                    water_mark = water_mark[:, :, 0]
+                    water_mark[water_mark < threshold] = 0
+                    water_mark[water_mark >= threshold] = 1
+            else:
                 water_mark[water_mark < threshold] = 0
                 water_mark[water_mark >= threshold] = 1
         except WaterMarkWrong as e:

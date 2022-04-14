@@ -107,17 +107,18 @@ def all_feature():
 #1)	Обучить модель на 200 картинок с одним ЦВЗ и попробовать подсунуть обученной модели
 #картинку с другим ЦВЗ и посмотреть на результат.
 def Task1(path_waterMark, path_dataSet, path_save_dir , path_feature_vector ):
-    LWT2EmbedWaterMark(path_waterMark, path_dataSet, path_save_dir)
-    create_feature(path_feature_vector, path_save_dir, get_water_mark(path_waterMark))
+    #LWT2EmbedWaterMark(path_waterMark, path_dataSet, path_save_dir)
+    #create_feature(path_feature_vector, path_save_dir, get_water_mark(path_waterMark))
 
 
-    path_dataSet2 = 'DataSet/DataSetTask1'  # путь до набора картинок
-    path_save_CW2 = 'Task1CW/AnotherCW'
-    path_feature_vec2 = "feature_vec/Task1/anotherCWFearVec.txt"
-    water_mark_2=  "Water Mark Image/waterMark1.jpg"
+    water_mark_2 = "Water Mark Image/WaterMarkRandom.jpg" # путь до водяного знака3 (Дота2)
+    path_dataSet_2 = 'DataSet/DataSetTask1' # путь до набора картинок
+    path_save_CW_2 = 'dota2'
+    path_feature_vec_2= "feature_vec/dota2WMFeatVec.txt"
 
-    #LWT2EmbedWaterMark(water_mark_2, path_dataSet2, path_save_CW2)
-    #create_feature(path_feature_vec2, path_save_CW2, get_water_mark(water_mark_2))
+    LWT2EmbedWaterMark(water_mark_2, path_dataSet_2, path_save_CW_2)
+    create_feature(path_feature_vec_2, path_save_CW_2, get_water_mark(water_mark_2))
+
 
 #Task 2: Обучить на встроенной цвз с малым содержанием 0 - ых или малым количеством 1 -ых битов.
 def Task2():
