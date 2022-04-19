@@ -2,16 +2,24 @@ import numpy as np
 from skimage.io import imread
 
 
-class GenerateBinaryWaterMark:
-    @staticmethod
-    def water_mark(size=32 * 32):
-        return np.random.randint(2, size=size)
-
-
 class WatermarkEmbedding:
+    '''
+    В данном Класе реализуются методы вставки (внедрения) ЦВЗ
+    вставка может осуществляться разными алгоритмами
+    Пока реализован только основной алгоритм встраивания (из научной статьи).
+    Тройное разлжение виевлет -> Разбиение на области -> Использование блоков 2x2
+    Основной метод embed
+    '''
+
     def __init__(self, w, T=3.46):
+        '''
+        :param w: Водяной знак. Квадрат (32х32) состоит из множества {0,1}.
+        :param T: Пороговое значение. Используется в формуле встраивания в блок 2х2
+        '''
         self.W = w
         self.T = T
+
+
 
     def __extract_hl2_area__(self, f, intex=(128, 192, 64, 128)):
         hl2 = f[intex[0]:intex[1], intex[2]:intex[3]]
@@ -41,7 +49,7 @@ class WatermarkEmbedding:
         G = sum_e_b_max / count_block
         return G
 
-    def water_mark_bit_embed_in_sample_block(self, block, bit, G):
+    def __water_mark_bit_embed_in_sample_block__(self, block, bit, G):
         f_c, s_c = self.__find_large_and_second_large_coefficient__(block)
         eb_max = f_c - s_c
 
@@ -98,7 +106,7 @@ class WatermarkEmbedding:
                     print("кончился водяной знак")
                 # print(f"бит водяного знака {bit} номер {number_bit}")
                 # number_bit+=1
-                block_with_water_mark = self.water_mark_bit_embed_in_sample_block(block, bit, G)
+                block_with_water_mark = self.__water_mark_bit_embed_in_sample_block__(block, bit, G)
 
                 hl2_res[i:i + 2, j:j + 2]=block_with_water_mark
 

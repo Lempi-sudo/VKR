@@ -7,7 +7,7 @@ if __name__ == '__main__':
     path_save_dir = 'CW'
     path_feature_vector= "feature_vec/RandomWMFeatVec.txt"
 
-    Task1(path_waterMark, path_dataSet, path_save_dir , path_feature_vector )
+    Task1(path_waterMark, path_dataSet, path_save_dir, path_feature_vector)
 
 
 

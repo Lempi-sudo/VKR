@@ -1,9 +1,6 @@
 import numpy as np
-from skimage.io import imread
-import matlab
-import os
 from WatermarkEmbedding import WatermarkEmbedding
-from ImageWork import ImagesNamesLoader, ImageLoader, WaterMarkLoader
+from ImageWork import *
 from MatLabCalculation import LiftingWaveletTransform, Transform_Matlab_to_NP
 from PIL import Image
 from CreateFeatureVector import ImageFeature
@@ -106,7 +103,7 @@ def all_feature():
 
 #1)	Обучить модель на 200 картинок с одним ЦВЗ и попробовать подсунуть обученной модели
 #картинку с другим ЦВЗ и посмотреть на результат.
-def Task1(path_waterMark, path_dataSet, path_save_dir , path_feature_vector ):
+def Task1(path_waterMark, path_dataSet, path_save_dir, path_feature_vector):
     #LWT2EmbedWaterMark(path_waterMark, path_dataSet, path_save_dir)
     #create_feature(path_feature_vector, path_save_dir, get_water_mark(path_waterMark))
 
