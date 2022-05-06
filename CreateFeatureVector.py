@@ -3,8 +3,10 @@ import numpy as np
 import pandas as pd
 from MatLabCalculation import LiftingWaveletTransform, Transform_Matlab_to_NP
 
-
 class ImageFeature:
+    '''
+    Класс который реализует формирование вектора признаков из изображения
+    '''
 
     def __init__(self, water_mark):
         '''
