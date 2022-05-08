@@ -6,7 +6,7 @@ from PIL import Image
 from CreateFeatureVector import ImageFeature
 from AttackInImage import Attack
 from skimage.util import random_noise
-from Metrici import psnr
+from Metrici import psnr , pobitovo_sravnenie_WaterMark
 
 
 def get_water_mark(path):
@@ -88,9 +88,8 @@ def create_feature(path_save_feature_vec_arg, path_image_water_arg, water_mark_a
     extract_feature.close()
 
 def all_feature():
-    pathwaterMark = "Water Mark Image/dota2.jpg"
+    pathwaterMark = "Water Mark Image/WaterMarkRandom.jpg"
     water_mark = WaterMarkLoader.load(pathwaterMark)
-    path_save_water_mark_image = 'CW'
 
     create_feature("feature_vec/AverageAttack.txt", "AttackedImage/AverageAttack", water_mark)
     create_feature("feature_vec/HistogramAttack.txt", "AttackedImage/HistogramAttack", water_mark)
@@ -99,6 +98,7 @@ def all_feature():
     create_feature("feature_vec/medianAttack.txt", "AttackedImage/medianAttack", water_mark)
     create_feature("feature_vec/SaltPaperAttack.txt", "AttackedImage/SaltPaperAttack", water_mark)
     create_feature("feature_vec/Sharpness.txt", "AttackedImage/Sharpness", water_mark)
+    create_feature("feature_vec/NO_Attack.txt", "CW", water_mark)
 
 
 #1)	Обучить модель на 200 картинок с одним ЦВЗ и попробовать подсунуть обученной модели
@@ -134,3 +134,30 @@ def Task2():
 
     LWT2EmbedWaterMark(water_mark_2, path_dataSet2, path_save_CW2)
     create_feature(path_feature_vec2, path_save_CW2, get_water_mark(water_mark_2))
+
+
+
+#Обучать нейросеть на картинках без искажений смотреть на метрики,
+# потом дообучить с искажениями и смотреть на метрики, хорошо бы чтобы они улучшились
+def Task4():
+    path_waterMark = "Water Mark Image/WaterMarkRandom.jpg"
+    path_dataSet = 'DataSet'  # путь до набора картинок
+    path_save_CW = 'CW'
+    path_feature_vec = "feature_vec/Task2/Task2FeatureVec.txt"
+
+    #ВСТРАИВАНИЕ ЦВЗ В ИЗОБРАЖЕНИЯ
+    #LWT2EmbedWaterMark(path_waterMark, path_dataSet, path_save_CW)
+
+    #АТАКИ НА ИЗОБРАЖЕНИЯ С ЦВЗ
+    #all_attack()
+
+    #СОЗДАНИЕ ВЕКТОРОВ ПРИЗНАКОВ
+    #all_feature()
+
+    #Далее необходимо обучить сеть на изображениях без атак а затем дообучить на изображениях с атаками
+
+    #СРАВНЕНИЯ ИЗОБРАЖЕНИЙ
+    W=WaterMarkLoader.load("Water Mark Image/WaterMarkRandom.jpg")
+    WR=WaterMarkLoader.load("W_R/WR_SP.tif")
+
+    print(pobitovo_sravnenie_WaterMark(W,WR))

@@ -1,15 +1,13 @@
-from Tasks import Task1, Task2
+from Tasks import Task1, Task4
 
 
 if __name__ == '__main__':
-    path_waterMark = "Water Mark Image/WaterMarkRandom.jpg" # путь до водяного знака3 (Дота2)
-    path_dataSet = 'DataSet/AnotherCWTask1/' # путь до набора картинок
-    path_save_dir = 'CW'
-    path_feature_vector= "feature_vec/RandomWMFeatVec.txt"
+    # path_waterMark = "Water Mark Image/WaterMarkRandom.jpg" # путь до водяного знака3 (Дота2)
+    # path_dataSet = 'DataSet/AnotherCWTask1/' # путь до набора картинок
+    # path_save_dir = 'CW'
+    # path_feature_vector= "feature_vec/RandomWMFeatVec.txt"
 
-    Task1(path_waterMark, path_dataSet, path_save_dir, path_feature_vector)
-
-
+    Task4()
 
     # path_waterMark = "Water Mark Image/waterMark1.jpg"
     # path_dataSet = 'DataSet'
