@@ -377,7 +377,7 @@ class Attack:
 
 
 
-    def All_Attack(self):
+    def All_Attack(self ,):
         image_path='CW'
         image_attacked_salt_paper='AttackedImage/SaltPaperAttack'
         image_attacked_median='AttackedImage/medianAttack'

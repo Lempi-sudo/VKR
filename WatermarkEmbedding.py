@@ -18,6 +18,7 @@ class WatermarkEmbedding:
         '''
         self.W = w
         self.T = T
+        print("SVI c порогом = ", T)
 
 
 
@@ -58,6 +59,7 @@ class WatermarkEmbedding:
                 f_c = f_c + self.T / 2
             else:
                 f_c = f_c - self.T / 2
+                print(rf"eb_max={eb_max} > max( {G}, {self.T})")
 
         else:
             f_c = f_c - eb_max
