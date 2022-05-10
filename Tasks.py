@@ -9,6 +9,7 @@ from skimage.util import random_noise
 from Metrici import psnr , pobitovo_sravnenie_WaterMark
 import cv2
 from ImageWork import *
+import pandas as pd
 
 
 def get_water_mark(path):
@@ -38,15 +39,17 @@ def LWT2EmbedWaterMark(path_waterMark, path_dataSet, path_save_dir , Treshold = 
 
             CA, CH, CV, CD = mat_lab_lwt2.lwt2(image)
 
-            cv = transformator.get_NP(CV)
+            # [ll,lh,hl,hh] = lwt2(x)
 
-            cv_water = scheme_embedding.embed(cv)
+            # obj = transformator.get_NP(CA) #
+            #
+            # obj_water = scheme_embedding.embed(obj)
+            #
+            # Cobj_water = transformator.get_MatLab_matrix(obj_water)
+            #
+            # sourse_image = mat_lab_lwt2.ilwt2(CA, CA, CA, CA)
 
-            CV_water = transformator.get_MatLab_matrix(cv_water)
-
-            sourse_image = mat_lab_lwt2.ilwt2(CA, CH, CV_water, CD, )
-
-            image_np = transformator.get_NP(sourse_image)
+            image_np = transformator.get_NP(CV)
 
             img = Image.fromarray(image_np.astype(np.uint8))
 
@@ -194,31 +197,52 @@ def embed_wm_differn_T(threshold_list_arg):
 
 def dependens_PSNR_and_T(threshold_list):
     threshold_list = threshold_list
-    img1 = imread("Task7/Img/Image00001.tif")
+    img1 = imread("Task7/Img/Image00002.tif")
     img2 = imread("Task7/Img/Image00018.tif")
-    img3 = imread("Task7/Img/Image00021.tif")
-    img4 = imread("Task7/Img/Image00047.tif")
-    img5 = imread("Task7/Img/Image00072.tif")
-    img_list = [img1, img2, img3, img4, img5]
+    img3 = imread("Task7/Img/Image00072.tif")
+    img4 = imread("Task7/Img/Image00075.tif")
+    img5 = imread("Task7/Img/Image00370.tif")
+    img6 = imread("Task7/Img/Image00378.tif")
+    img7 = imread("Task7/Img/Image00429.tif")
+    img_list = [img1, img2, img3, img4, img5, img6, img7]
     dirpath = "Task7/PSNR at T/T = "
+    listrow = []
+
+
     for T in threshold_list:
         dir = dirpath + str(T)
         print(rf"{dir}     ПОРОГ {T}")
         name_loader = ImagesNamesLoader()
         inl = name_loader.get_image_name_list(dir)
         shablon_img = iter(img_list)
+        list_value_psnr = []
+
         for path_image in inl:
             imgTEST = imread(path_image)
             tmp_img = next(shablon_img)
             PSNR = cv2.PSNR(imgTEST, tmp_img)
-            if PSNR < 27:
-                print("ВНИМАНИЕ!!!!!!!!")
             indexstart=path_image.find("CW")
             print(rf" psnr = {PSNR} . Картинка {path_image[indexstart:]}")
+            list_value_psnr.append(PSNR)
+        round(3.75, 2)
+        new_row = {'Threshold': T, "img1": round(list_value_psnr[0],1), "img2": round(list_value_psnr[1],1), "img3": round(list_value_psnr[2],1),
+               "img4": round(list_value_psnr[3],1) ,"img5": round(list_value_psnr[4],1),"img6": round(list_value_psnr[5],1),"img7": round(list_value_psnr[6],1)}
+
+        listrow.append(new_row)
+
+
+    columns = ['Threshold', 'img1', 'img2', 'img3', 'img4' , 'img5', 'img6', 'img7' ]
+    df = pd.DataFrame(data=listrow, columns=columns)
+    df.to_excel("Task7/Psnr at T.xlsx")
+    df.to_csv("Task7/Psnr at t.txt")
+
+
+
+
 
 #Зависимость метрик (PSNR и ещё че ни будь) от порога (T) для разныхх картинов типа лена оронгутанг танк перцы и тд .
 def Task7():
-    threshold_list = np.arange(10000, 100000, 50000)
+    threshold_list = np.arange(0, 1, 2)
     embed_wm_differn_T(threshold_list)
     dependens_PSNR_and_T(threshold_list)
 
