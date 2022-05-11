@@ -1,4 +1,4 @@
-from Tasks import Task1, Task4 , Task7,  LWT2EmbedWaterMark , all_attack, all_feature
+from Tasks import Task1, Task4 , Task7, Task9,  LWT2EmbedWaterMark , all_attack, all_feature
 from AttackInImage import *
 import numpy as np
 from WatermarkEmbedding import WatermarkEmbedding
@@ -104,17 +104,6 @@ def All_Attack_ReadbleImg():
     attack.Gamma_Correction(image_path, Gamma_Correction)
     attack.Sharpness(image_path, Sharpness)
 
-
-def cv2PSRN(W, Wr):
-    p = cv2.PSNR(W, Wr)
-    return p
-
-
-# результат выдает побитовое сравнение в процентах насколько похожи два ЦВЗ
-def pobitovo_sravnenie_WaterMark(W1, W2, total_bit=1024):
-    t1 = W1 == W2
-    sum = t1.sum()
-    return sum / total_bit * 100
 
 
 if __name__ == '__main__':

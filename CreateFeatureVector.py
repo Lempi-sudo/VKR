@@ -64,8 +64,8 @@ class ImageFeature:
             while True:
                 image = load_image.next_image()
                 CA, CH, CV, CD = self.mat_lab.lwt2(image)
-                cv = self.transformator.get_NP(CV)
-                hl2 = self.__extract_hl2_area__(cv)
+                c = self.transformator.get_NP(CV)
+                hl2 = self.__extract_hl2_area__(c)
                 blocks = self.__all_blocks__(hl2)
                 iter_water = iter(self.water_mark)
                 for block in blocks:
