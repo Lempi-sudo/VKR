@@ -39,13 +39,13 @@ def LWT2EmbedWaterMark(path_waterMark, path_dataSet, path_save_dir , Treshold = 
 
             CA, CH, CV, CD = mat_lab_lwt2.lwt2(image)
             # [ll,lh,hl,hh] = lwt2(x)
-            c = transformator.get_NP(CV)
+            c = transformator.get_NP(CD)
 
             cobj = scheme_embedding.embed(c)
 
             Cobj_water = transformator.get_MatLab_matrix(cobj)
 
-            sourse_image = mat_lab_lwt2.ilwt2(CA, CH, Cobj_water, CD )
+            sourse_image = mat_lab_lwt2.ilwt2(CA, CH, CV, Cobj_water )
 
             image_np = transformator.get_NP(sourse_image)
 
@@ -233,9 +233,10 @@ def dependens_PSNR_and_T(threshold_list):
 
         list_value_psnr = []
 
-        for i in range(count_image):
+        for i , path in enumerate(inl , start=0):
             PSNR = cv2.PSNR(image_wm[i], image_no_wm[i])
-            print(rf" psnr = {PSNR} . Картинка № {i}")
+            indexstart = path.find("CW")
+            print(rf" psnr = {PSNR} . Картинка № {path[indexstart:]}")
             list_value_psnr.append(PSNR)
 
         new_row = {'Threshold': T, "img1": round(list_value_psnr[0],1), "img2": round(list_value_psnr[1],1), "img3": round(list_value_psnr[2],1),
@@ -250,7 +251,7 @@ def dependens_PSNR_and_T(threshold_list):
 
 #Зависимость метрик (PSNR и ещё че ни будь) от порога (T) для разныхх картинов типа лена оронгутанг танк перцы и тд .
 def Task7():
-    threshold_list = np.arange(0, 170, 2)
+    threshold_list = np.arange(50, 190, 30)
     embed_wm_differn_T(threshold_list)
     dependens_PSNR_and_T(threshold_list)
 
