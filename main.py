@@ -1,4 +1,4 @@
-from Tasks import Task1, Task4 , Task7, Task9,  LWT2EmbedWaterMark , all_attack, all_feature
+from Tasks import Task10, Task1, Task4 , Task7, Task9,  LWT2EmbedWaterMark , all_attack, all_feature
 from AttackInImage import *
 import numpy as np
 from WatermarkEmbedding import WatermarkEmbedding
@@ -107,7 +107,7 @@ def All_Attack_ReadbleImg():
 
 
 if __name__ == '__main__':
-    Task7()
+    Task10()
 
     # path_waterMark = "Water Mark Image/WaterMarkRandom.jpg" # путь до водяного знака3 (Дота2)
     # path_dataSet = 'DataSet/AnotherCWTask1/' # путь до набора картинок

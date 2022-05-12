@@ -265,3 +265,59 @@ def Task9():
 
 
 
+def LWT2forTask10(path_dataSet, path_save_dir , number_image , level):
+    load_name = ImagesNamesLoader()
+    path_name_image = load_name.get_image_name_list(path_dataSet)
+
+    load_image = ImageLoader(path_name_image)
+
+    mat_lab_lwt2 = LiftingWaveletTransform()
+    transformator = Transform_Matlab_to_NP()
+
+    i = 1
+    number_image = number_image
+    try:
+        while True:
+            image = load_image.next_image()
+
+            CA, CH, CV, CD = mat_lab_lwt2.lwt2(image , level=level)
+            # [ll,lh,hl,hh] = lwt2(x)
+
+            image_np = transformator.get_NP(CA)
+
+            img = Image.fromarray(image_np.astype(np.uint8))
+
+            name_image = "CW" + str(number_image)
+
+            path_save = rf"{path_save_dir}/{name_image}.tif"
+
+            if (os.path.exists(path_save)):
+                os.remove(path_save)
+            img.save(path_save)
+            img.close()
+            number_image += 1
+
+            print(f"картинок обработано {i}")
+            i += 1
+
+    except StopIteration:
+        print("все изображения считаны")
+
+    except Exception:
+        print("ЧТО - ТО СЛУЧИЛОСЬ ")
+
+    finally:
+        print("выкл matlab")
+        mat_lab_lwt2.exit_engine()
+
+    print()
+
+#как выглядит виевлет трансформ для разных уровней декомпозиции
+def Task10():
+    path_save_CW = "sampleBlock"
+    path_dataSet= "Task7/Img"
+    for i in range(1,7,1):
+        LWT2forTask10(path_dataSet, path_save_CW,i,i)
+
+
+
