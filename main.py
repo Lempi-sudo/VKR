@@ -114,27 +114,20 @@ if __name__ == '__main__':
     # path_save_dir = 'CW'
     # path_feature_vector= "feature_vec/RandomWMFeatVec.txt"
 
-
     #embed_readble_wm()
     #All_Attack_ReadbleImg()
 
-
-
     #all_feature()
-
 
     # path_waterMark = "Water Mark Image/waterMark1.jpg"
     # path_dataSet = 'DataSet'
     # path_save_water_mark_image = 'CW'
-    #
     # path_W_tilda="W_R/histogram.tif"
     # w_tilda=imread(path_W_tilda)
-    #
     # w_tilda[w_tilda < 100] = 0
     # w_tilda[w_tilda >= 100] = 1
     # w=WaterMarkLoader.load(path_waterMark)
     # print(psnr(w_tilda,w))
-
 
     #LWT2EmbedWaterMark(path_waterMark, path_dataSet, path_save_water_mark_image)
 

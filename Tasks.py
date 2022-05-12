@@ -39,13 +39,13 @@ def LWT2EmbedWaterMark(path_waterMark, path_dataSet, path_save_dir , Treshold = 
 
             CA, CH, CV, CD = mat_lab_lwt2.lwt2(image)
             # [ll,lh,hl,hh] = lwt2(x)
-            c = transformator.get_NP(CD)
+            c = transformator.get_NP(CA)
 
             cobj = scheme_embedding.embed(c)
 
             Cobj_water = transformator.get_MatLab_matrix(cobj)
 
-            sourse_image = mat_lab_lwt2.ilwt2(CA, CH, CV, Cobj_water )
+            sourse_image = mat_lab_lwt2.ilwt2(Cobj_water, CH, CV, CD )
 
             image_np = transformator.get_NP(sourse_image)
 
@@ -90,17 +90,6 @@ def create_feature(path_save_feature_vec_arg, path_image_water_arg, water_mark_a
     extract_feature.save_feature_data(path_save_feature_vec, path_image_water)
     extract_feature.close()
 
-
-    # create_feature("feature_vec/AverageAttack.txt", "AttackedImage/AverageAttack", water_mark)
-    # create_feature("feature_vec/HistogramAttack.txt", "AttackedImage/HistogramAttack", water_mark)
-    # create_feature("feature_vec/GammaCorrection.txt", "AttackedImage/GammaCorrection", water_mark)
-    # create_feature("feature_vec/JPEG50.txt", "AttackedImage/JPEG50", water_mark)
-    # create_feature("feature_vec/medianAttack.txt", "AttackedImage/medianAttack", water_mark)
-    # create_feature("feature_vec/SaltPaperAttack.txt", "AttackedImage/SaltPaperAttack", water_mark)
-    # create_feature("feature_vec/Sharpness.txt", "AttackedImage/Sharpness", water_mark)
-    # create_feature("feature_vec/NO_Attack.txt", "CW", water_mark)
-
-
 # def all_feature():
 #     pathwaterMark = "Water Mark Image/waterMark3.jpg"
 #     water_mark = WaterMarkLoader.load(pathwaterMark)
@@ -113,6 +102,15 @@ def create_feature(path_save_feature_vec_arg, path_image_water_arg, water_mark_a
 #     create_feature("feature_vec/SaltPaperAttackDota.txt", "ImgWMReableAttack/SaltPaperAttack", water_mark)
 #     create_feature("feature_vec/SharpnessDota.txt", "ImgWMReableAttack/Sharpness", water_mark)
 #     create_feature("feature_vec/NO_AttackDota.txt", "ImgWMReadble", water_mark)
+###################################
+# create_feature("feature_vec/AverageAttack.txt", "AttackedImage/AverageAttack", water_mark)
+# create_feature("feature_vec/HistogramAttack.txt", "AttackedImage/HistogramAttack", water_mark)
+# create_feature("feature_vec/GammaCorrection.txt", "AttackedImage/GammaCorrection", water_mark)
+# create_feature("feature_vec/JPEG50.txt", "AttackedImage/JPEG50", water_mark)
+# create_feature("feature_vec/medianAttack.txt", "AttackedImage/medianAttack", water_mark)
+# create_feature("feature_vec/SaltPaperAttack.txt", "AttackedImage/SaltPaperAttack", water_mark)
+# create_feature("feature_vec/Sharpness.txt", "AttackedImage/Sharpness", water_mark)
+# create_feature("feature_vec/NO_Attack.txt", "CW", water_mark)
 
 def all_feature():
     pathwaterMark = "Water Mark Image/WaterMarkRandom.jpg"
@@ -126,9 +124,6 @@ def all_feature():
     create_feature("feature_vec/SaltPaperAttack.txt", "AttackedImage/SaltPaperAttack", water_mark)
     create_feature("feature_vec/Sharpness.txt", "AttackedImage/Sharpness", water_mark)
     create_feature("feature_vec/NO_Attack.txt", "CW", water_mark)
-
-
-
 
 #1)	Обучить модель на 200 картинок с одним ЦВЗ и попробовать подсунуть обученной модели
 #картинку с другим ЦВЗ и посмотреть на результат.
@@ -144,7 +139,6 @@ def Task1(path_waterMark, path_dataSet, path_save_dir, path_feature_vector):
 
     LWT2EmbedWaterMark(water_mark_2, path_dataSet_2, path_save_CW_2)
     create_feature(path_feature_vec_2, path_save_CW_2, get_water_mark(water_mark_2))
-
 
 #Task 2: Обучить на встроенной цвз с малым содержанием 0 - ых или малым количеством 1 -ых битов.
 def Task2():
@@ -188,7 +182,6 @@ def Task4():
 
     print(pobitovo_sravnenie_WaterMark(W,WR))
 
-
 def embed_wm_differn_T(threshold_list_arg):
     threshold_list = threshold_list_arg
     path_water_mark = "Water Mark Image/WaterMarkRandom.jpg"
@@ -206,7 +199,6 @@ def embed_wm_differn_T(threshold_list_arg):
         print("сохранение в папку ", dirsave)
         LWT2EmbedWaterMark(path_water_mark, "Task7/Img", dirsave, T)
 
-#можно изменить чтобы работало со всеми изображениями
 def dependens_PSNR_and_T(threshold_list):
 
     threshold_list = threshold_list
@@ -251,12 +243,9 @@ def dependens_PSNR_and_T(threshold_list):
 
 #Зависимость метрик (PSNR и ещё че ни будь) от порога (T) для разныхх картинов типа лена оронгутанг танк перцы и тд .
 def Task7():
-    threshold_list = np.arange(50, 190, 30)
+    threshold_list = np.arange(0, 170, 2)
     embed_wm_differn_T(threshold_list)
     dependens_PSNR_and_T(threshold_list)
-
-
-
 
 
 #Task9: проверить метрики при вставке цвз в разнвые части (hh ll lh hl)
