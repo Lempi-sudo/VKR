@@ -11,7 +11,7 @@ class LiftingWaveletTransform:
         self.CH = 0
         self.CV = 0
 
-    def lwt2(self,image , level=3):
+    def lwt2(self,image , level=1):
         try:
             mat_image = matlab.double(image.tolist())
             [CA, CH, CV, CD] = self.eng.lwt2(mat_image, 'haar', level, nargout=4)
@@ -25,7 +25,7 @@ class LiftingWaveletTransform:
         return self.CA , self.CH ,self.CV ,self.CD
 
 
-    def ilwt2(self,CA, CH, CV, CD, level=3):
+    def ilwt2(self,CA, CH, CV, CD, level=1):
         return self.eng.ilwt2(CA, CH, CV, CD, 'haar', level, nargout=1)
 
     def exit_engine(self):

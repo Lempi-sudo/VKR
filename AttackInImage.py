@@ -322,6 +322,8 @@ class Attack:
         image_histogram = 'AttackedImage/HistogramAttack'
         Gamma_Correction = 'AttackedImage/GammaCorrection'
         Sharpness = 'AttackedImage/Sharpness'
+        replace= "AttackedImage/Replace_frame"
+        crop = "AttackedImage/Crop"
 
         self.median_attack(path_image=image_path , path_image_attacked=image_attacked_median )
         self.salt_peper_attack(path_image=image_path , path_image_attacked= image_attacked_salt_paper)
@@ -330,8 +332,8 @@ class Attack:
         self.Histogram(image_path,image_histogram)
         self.Gamma_Correction(image_path, Gamma_Correction)
         self.Sharpness(image_path, Sharpness)
-        self.Crop("CW","AttackedImage/Crop" , p=51 , mode="V")
-        self.frame_replacement("CW","AttackedImage/Crop" , size=51 ,path_image_for_replace="No_Empty")
+        self.Crop("CW", crop , p=51 , mode="V")
+        self.frame_replacement("CW",replace , size=51 ,path_image_for_replace="No_Empty")
 
 
 

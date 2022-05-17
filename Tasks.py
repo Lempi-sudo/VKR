@@ -80,7 +80,7 @@ def lwt2_in_all_image(path_waterMark, path_dataSet, path_save_dir , Treshold = 3
     print()
 
 
-def LWT2EmbedWaterMark(path_waterMark, path_dataSet, path_save_dir , Treshold = 3.46):
+def LWT2EmbedWaterMark_HL2(path_waterMark, path_dataSet, path_save_dir, Treshold = 3.46):
     ## Данная функция берет все изображения из директории path_dataSet
     ## и встраивает туда водяной знак в область виевлет преобразования 3 уровня
     ## и сохраняет в path_save_dir
@@ -151,43 +151,30 @@ def create_feature(path_save_feature_vec_arg, path_image_water_arg, water_mark_a
     extract_feature = ImageFeature(water_mark)
     path_save_feature_vec = path_save_feature_vec_arg
     path_image_water = path_image_water_arg
-    extract_feature.save_feature_data(path_save_feature_vec, path_image_water)
+    extract_feature.save_all_image_feature_data(path_save_feature_vec, path_image_water)
     extract_feature.close()
 
-# def all_feature():
-#     pathwaterMark = "Water Mark Image/waterMark3.jpg"
-#     water_mark = WaterMarkLoader.load(pathwaterMark)
-#
-#     create_feature("feature_vec/AverageAttackDota.txt", "ImgWMReableAttack/AverageAttack", water_mark)
-#     create_feature("feature_vec/HistogramAttackDota.txt", "ImgWMReableAttack/HistogramAttack", water_mark)
-#     create_feature("feature_vec/GammaCorrectionDota.txt", "ImgWMReableAttack/GammaCorrection", water_mark)
-#     create_feature("feature_vec/JPEG50Dota.txt", "ImgWMReableAttack/JPEG50", water_mark)
-#     create_feature("feature_vec/medianAttackDota.txt", "ImgWMReableAttack/medianAttack", water_mark)
-#     create_feature("feature_vec/SaltPaperAttackDota.txt", "ImgWMReableAttack/SaltPaperAttack", water_mark)
-#     create_feature("feature_vec/SharpnessDota.txt", "ImgWMReableAttack/Sharpness", water_mark)
-#     create_feature("feature_vec/NO_AttackDota.txt", "ImgWMReadble", water_mark)
-###################################
-# create_feature("feature_vec/AverageAttack.txt", "AttackedImage/AverageAttack", water_mark)
-# create_feature("feature_vec/HistogramAttack.txt", "AttackedImage/HistogramAttack", water_mark)
-# create_feature("feature_vec/GammaCorrection.txt", "AttackedImage/GammaCorrection", water_mark)
-# create_feature("feature_vec/JPEG50.txt", "AttackedImage/JPEG50", water_mark)
-# create_feature("feature_vec/medianAttack.txt", "AttackedImage/medianAttack", water_mark)
-# create_feature("feature_vec/SaltPaperAttack.txt", "AttackedImage/SaltPaperAttack", water_mark)
-# create_feature("feature_vec/Sharpness.txt", "AttackedImage/Sharpness", water_mark)
-# create_feature("feature_vec/NO_Attack.txt", "CW", water_mark)
 
 def all_feature():
     pathwaterMark = "Water Mark Image/WaterMarkRandom.jpg"
     water_mark = WaterMarkLoader.load(pathwaterMark)
-
-    #create_feature("feature_vec/AverageAttack.txt", "AttackedImage/AverageAttack", water_mark)
-    # create_feature("feature_vec/HistogramAttack.txt", "AttackedImage/HistogramAttack", water_mark)
-    # create_feature("feature_vec/GammaCorrection.txt", "AttackedImage/GammaCorrection", water_mark)
-    # create_feature("feature_vec/JPEG50.txt", "AttackedImage/JPEG50", water_mark)
-    # create_feature("feature_vec/medianAttack.txt", "AttackedImage/medianAttack", water_mark)
-    # create_feature("feature_vec/SaltPaperAttack.txt", "AttackedImage/SaltPaperAttack", water_mark)
-    # create_feature("feature_vec/Sharpness.txt", "AttackedImage/Sharpness", water_mark)
+    create_feature("feature_vec/AverageAttack.txt", "AttackedImage/AverageAttack", water_mark)
+    create_feature("feature_vec/HistogramAttack.txt", "AttackedImage/HistogramAttack", water_mark)
+    create_feature("feature_vec/GammaCorrection.txt", "AttackedImage/GammaCorrection", water_mark)
+    create_feature("feature_vec/JPEG50.txt", "AttackedImage/JPEG50", water_mark)
+    create_feature("feature_vec/medianAttack.txt", "AttackedImage/medianAttack", water_mark)
+    create_feature("feature_vec/SaltPaperAttack.txt", "AttackedImage/SaltPaperAttack", water_mark)
+    create_feature("feature_vec/Sharpness.txt", "AttackedImage/Sharpness", water_mark)
     create_feature("feature_vec/NO_Attack.txt", "CW", water_mark)
+
+
+
+
+
+
+
+
+
 
 #1)	Обучить модель на 200 картинок с одним ЦВЗ и попробовать подсунуть обученной модели
 #картинку с другим ЦВЗ и посмотреть на результат.
@@ -201,7 +188,7 @@ def Task1(path_waterMark, path_dataSet, path_save_dir, path_feature_vector):
     path_save_CW_2 = 'dota2'
     path_feature_vec_2= "feature_vec/dota2WMFeatVec.txt"
 
-    LWT2EmbedWaterMark(water_mark_2, path_dataSet_2, path_save_CW_2)
+    LWT2EmbedWaterMark_HL2(water_mark_2, path_dataSet_2, path_save_CW_2)
     create_feature(path_feature_vec_2, path_save_CW_2, get_water_mark(water_mark_2))
 
 #Task 2: Обучить на встроенной цвз с малым содержанием 0 - ых или малым количеством 1 -ых битов.
@@ -219,7 +206,7 @@ def Task2():
     path_feature_vec2 = "feature_vec/Task2/anotherCWFearVec.txt"
     water_mark_2 = "Water Mark Image/waterMark1.jpg"
 
-    LWT2EmbedWaterMark(water_mark_2, path_dataSet2, path_save_CW2)
+    LWT2EmbedWaterMark_HL2(water_mark_2, path_dataSet2, path_save_CW2)
     create_feature(path_feature_vec2, path_save_CW2, get_water_mark(water_mark_2))
 #Обучать нейросеть на картинках без искажений смотреть на метрики,
 # потом дообучить с искажениями и смотреть на метрики, хорошо бы чтобы они улучшились
@@ -312,7 +299,6 @@ def Task7():
     embed_wm_differn_T(threshold_list)
     dependens_PSNR_and_T(threshold_list)
 
-
 #Task9: проверить метрики при вставке цвз в разнвые части (hh ll lh hl)
 def Task9():
     path_waterMark = "Water Mark Image/WaterMarkRandom.jpg"
@@ -327,8 +313,6 @@ def Task9():
 
     #СОЗДАНИЕ ВЕКТОРОВ ПРИЗНАКОВ
     all_feature()
-
-
 
 def LWT2forTask10(path_dataSet, path_save_dir , number_image , level):
     load_name = ImagesNamesLoader()
@@ -383,8 +367,6 @@ def Task10():
     path_dataSet= "Task7/Img"
     for i in range(3,4,1):
         LWT2forTask10(path_dataSet, path_save_CW,i,i)
-
-
 
 def Task11():
     wm = GenerateBinaryWaterMark.water_mark_coeff(coef=8)

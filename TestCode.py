@@ -15,11 +15,14 @@ import WatermarkEmbedding as we
 import Helper
 from WatermarkEmbedding import *
 from AttackInImage import *
+from CreateFeatureVector import *
 
 
 if __name__ == '__main__':
-    intruder = Attack()
-    intruder.Crop("CW","AttackedImage/Crop" , p=100 , mode="H&V")
+    pathwaterMark = "Water Mark Image/WaterMarkRandom.jpg"
+    water_mark = WaterMarkLoader.load(pathwaterMark)
+    f= ImageFeature(water_mark)
+    f.save_all_image_feature_data("feature_vec/Test.txt","Task7/Img")
 
 
 

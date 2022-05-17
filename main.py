@@ -1,4 +1,4 @@
-from Tasks import Task10, Task11, Task1, Task4 , Task7, Task9,  LWT2EmbedWaterMark , all_attack, all_feature
+from Tasks import Task10, Task11, Task1, Task4 , Task7, Task9,  LWT2EmbedWaterMark_HL2 , all_attack, all_feature
 from AttackInImage import *
 import numpy as np
 from WatermarkEmbedding import WatermarkEmbedding
@@ -19,7 +19,7 @@ def embed_readble_wm():
     path_waterMark = "Water Mark Image/waterMark3.jpg"
     path_dataSet = 'DataSetTest'
     path_save_water_mark_image = 'ImgWMReadble'
-    LWT2EmbedWaterMark(path_waterMark, path_dataSet, path_save_water_mark_image)
+    LWT2EmbedWaterMark_HL2(path_waterMark, path_dataSet, path_save_water_mark_image)
 
 def LWT2EmbedWaterMarkcopy(path_waterMark, path_dataSet, path_save_dir , Treshold = 3.46):
     ## Данная функция берет все изображения из директории path_dataSet
