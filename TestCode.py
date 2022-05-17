@@ -19,7 +19,7 @@ from AttackInImage import *
 
 if __name__ == '__main__':
     intruder = Attack()
-    intruder.frame_replacement("CW","AttackedImage/Replace_frame" , size=100 , path_image_for_replace="nno")
+    intruder.Crop("CW","AttackedImage/Crop" , p=100 , mode="H&V")
 
 
 

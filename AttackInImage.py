@@ -8,10 +8,10 @@ import cv2
 from skimage.io import imread
 from scipy.ndimage import gaussian_filter
 
-
+#CДЕЛАТЬ РЕФАКТИРИНГ ОДИНАКОВЫЕ КУСКИ КОДА
 class Attack:
-    # хз как это должно работать , пока не использую
-    def Crop(self, path_image, path_image_attacked, p):
+    #Работает!!! , но уже не помню как :)=
+    def Crop(self, path_image, path_image_attacked, p=51 , mode="V"):
         images_name_loader = ImagesNamesLoader()
         path_image_list = images_name_loader.get_image_name_list(path_image)
         image_loader = ImageLoader(path_image_list)
@@ -22,17 +22,23 @@ class Attack:
         try:
             while True:
                 image = image_loader.next_image()
-                width, height = image.shape
-                image = Image.fromarray(image.astype(np.uint8))
 
-                left = 0
-                top = 0
-                right = int(width * (1 - p))
-                bottom = int(height * (1 - p))
+                bad_image = image.copy()
 
-                bad_image = image.crop((left, top, right, bottom))
+                if mode=="H":
+                    bad_image[0:p,0:512] = 0
+                    bad_image[512-p : 512 , 0:512] = 0
+                if mode=="V":
+                    bad_image[0:512,0:p] = 0
+                    bad_image[0:512,512 - p: 512,] = 0
+                if mode == "H&V" or mode == "V&H":
+                    bad_image[0:512, 0:p] = 0
+                    bad_image[0:512, 512 - p: 512, ] = 0
+                    bad_image[0:p, 0:512] = 0
+                    bad_image[512 - p: 512, 0:512] = 0
 
-                bridge_np = np.asarray(bad_image)
+                img = Image.fromarray(bad_image.astype(np.uint8))
+
 
                 name_image = "Crop" + str(number_image)
 
@@ -40,8 +46,8 @@ class Attack:
 
                 if (os.path.exists(path_save)):
                     os.remove(path_save)
-                bad_image.save(path_save)
-                bad_image.close()
+                img.save(path_save)
+                img.close()
                 number_image += 1
 
                 if (i % 25 == 0):
@@ -50,82 +56,6 @@ class Attack:
 
         except StopIteration:
             print("все изображения считаны")
-
-    # НЕ РАБОТАЕТ
-    def Gaussian_noise_attack(self, path_image, path_image_attacked, p=0.01):
-        image_name_loader = ImagesNamesLoader()
-        path_image_list = image_name_loader.get_image_name_list(path_image)
-        image_loader = ImageLoader(path_image_list)
-
-        number_image = 1
-        i = 1
-
-        try:
-            while True:
-                image = image_loader.next_image()
-
-                bad_image_norm = random_noise(np.full(image.shape, -1), mode='gaussian', var=0.01)
-
-                max = 255
-                min = 0
-
-                bad_image = bad_image_norm * 255
-
-                img = Image.fromarray(bad_image.astype(np.uint8))
-                name_image = "GaussianAttack" + str(number_image)
-
-                path_save = rf"{path_image_attacked}/{name_image}.tif"
-
-                if (os.path.exists(path_save)):
-                    os.remove(path_save)
-                img.save(path_save)
-                img.close()
-                number_image += 1
-
-                if (i % 25 == 0):
-                    print(f"картинок атаковано Гауса шум  {i}")
-                i += 1
-
-        except StopIteration:
-            print("все изображения считаны")
-
-    # Работает но не понятно правильно ли ?
-    def Gaussian_filter_attack(self, path_image, path_image_attacked, window=3):
-        load_name = ImagesNamesLoader()
-        path_name_image = load_name.get_image_name_list(path_image)
-        load_image = ImageLoader(path_name_image)
-
-        number_image = 1
-        i = 1
-
-        try:
-            while True:
-                image = load_image.next_image()
-
-                kernel = 1 / 3
-
-                bad_image = gaussian_filter(image, sigma=kernel)
-
-                test = image - bad_image
-
-                img = Image.fromarray(bad_image.astype(np.uint8))
-                name_image = "GaussianFilterAttack" + str(number_image)
-
-                path_save = rf"{path_image_attacked}/{name_image}.tif"
-
-                if (os.path.exists(path_save)):
-                    os.remove(path_save)
-                img.save(path_save)
-                img.close()
-                number_image += 1
-
-                if (i % 25 == 0):
-                    print(f"картинок атаковано GaussianFilterAttack  {i}")
-                i += 1
-
-        except StopIteration:
-            print("все изображения считаны")
-
 
     def frame_replacement(self, path_image, path_image_attacked, size=51 , path_image_for_replace="Empty"):
         load_name = ImagesNamesLoader()
@@ -170,9 +100,6 @@ class Attack:
         except StopIteration:
             print("все изображения считаны")
 
-
-
-    #Работает!!! , но уже не помню как :)=
     def median_attack(self, path_image, path_image_attacked, window=(3,3)):
         load_name = ImagesNamesLoader()
         path_name_image = load_name.get_image_name_list(path_image)
@@ -204,7 +131,6 @@ class Attack:
 
         except StopIteration:
             print("все изображения считаны")
-
 
     def average_filter(self,path_image, path_image_attacked, window=3):
         load_name = ImagesNamesLoader()
@@ -384,9 +310,6 @@ class Attack:
         except StopIteration:
             print("все изображения считаны")
 
-
-
-
     def All_Attack(self ,):
         image_path='CW'
         image_attacked_salt_paper='AttackedImage/SaltPaperAttack'
@@ -407,4 +330,83 @@ class Attack:
         self.Histogram(image_path,image_histogram)
         self.Gamma_Correction(image_path, Gamma_Correction)
         self.Sharpness(image_path, Sharpness)
+        self.Crop("CW","AttackedImage/Crop" , p=51 , mode="V")
+        self.frame_replacement("CW","AttackedImage/Crop" , size=51 ,path_image_for_replace="No_Empty")
+
+
+
+    # хз как это должно работать , пока не использую
+    # НЕ РАБОТАЕТ
+    def Gaussian_noise_attack(self, path_image, path_image_attacked, p=0.01):
+        image_name_loader = ImagesNamesLoader()
+        path_image_list = image_name_loader.get_image_name_list(path_image)
+        image_loader = ImageLoader(path_image_list)
+
+        number_image = 1
+        i = 1
+
+        try:
+            while True:
+                image = image_loader.next_image()
+
+                bad_image_norm = random_noise(np.full(image.shape, -1), mode='gaussian', var=0.01)
+
+                max = 255
+                min = 0
+
+                bad_image = bad_image_norm * 255
+
+                img = Image.fromarray(bad_image.astype(np.uint8))
+                name_image = "GaussianAttack" + str(number_image)
+
+                path_save = rf"{path_image_attacked}/{name_image}.tif"
+
+                if (os.path.exists(path_save)):
+                    os.remove(path_save)
+                img.save(path_save)
+                img.close()
+                number_image += 1
+
+                if (i % 25 == 0):
+                    print(f"картинок атаковано Гауса шум  {i}")
+                i += 1
+
+        except StopIteration:
+            print("все изображения считаны")
+    # Работает но не понятно правильно ли ?
+    def Gaussian_filter_attack(self, path_image, path_image_attacked, window=3):
+        load_name = ImagesNamesLoader()
+        path_name_image = load_name.get_image_name_list(path_image)
+        load_image = ImageLoader(path_name_image)
+
+        number_image = 1
+        i = 1
+
+        try:
+            while True:
+                image = load_image.next_image()
+
+                kernel = 1 / 3
+
+                bad_image = gaussian_filter(image, sigma=kernel)
+
+                test = image - bad_image
+
+                img = Image.fromarray(bad_image.astype(np.uint8))
+                name_image = "GaussianFilterAttack" + str(number_image)
+
+                path_save = rf"{path_image_attacked}/{name_image}.tif"
+
+                if (os.path.exists(path_save)):
+                    os.remove(path_save)
+                img.save(path_save)
+                img.close()
+                number_image += 1
+
+                if (i % 25 == 0):
+                    print(f"картинок атаковано GaussianFilterAttack  {i}")
+                i += 1
+
+        except StopIteration:
+            print("все изображения считаны")
 
