@@ -107,7 +107,7 @@ def All_Attack_ReadbleImg():
 
 
 if __name__ == '__main__':
-    Task11()
+    Task7()
 
     # path_waterMark = "Water Mark Image/WaterMarkRandom.jpg" # путь до водяного знака3 (Дота2)
     # path_dataSet = 'DataSet/AnotherCWTask1/' # путь до набора картинок

@@ -17,6 +17,69 @@ def get_water_mark(path):
     water_mark = WaterMarkLoader.load(path)
     return water_mark
 
+
+def lwt2_in_all_image(path_waterMark, path_dataSet, path_save_dir , Treshold = 3.46):
+    ## Данная функция берет все изображения из директории path_dataSet
+    ## и встраивает туда водяной знак в область виевлет преобразования 3 уровня
+    ## и сохраняет в path_save_dir
+    water_mark = WaterMarkLoader.load(path_waterMark)  # считывание водяного знака
+
+    load_name = ImagesNamesLoader()
+    path_name_image = load_name.get_image_name_list(path_dataSet)
+
+    load_image = ImageLoader(path_name_image)
+
+    mat_lab_lwt2 = LiftingWaveletTransform()
+    scheme_embedding = WatermarkEmbedding(water_mark, Treshold)
+    transformator = Transform_Matlab_to_NP()
+
+    i = 1
+    number_image = 1
+    try:
+        while True:
+            image = load_image.next_image()
+
+            CA, CH, CV, CD = mat_lab_lwt2.lwt2(image , level= 1)
+            # [ll,lh,hl,hh] = lwt2(x)
+
+            c = transformator.get_NP(CA)
+
+            cobj = scheme_embedding.embed_in_all_image(c)
+
+            Cobj_water = transformator.get_MatLab_matrix(cobj)
+
+            sourse_image = mat_lab_lwt2.ilwt2(CA, CH, Cobj_water, CD , level = 1)
+
+            image_np = transformator.get_NP(sourse_image)
+
+            img = Image.fromarray(image_np.astype(np.uint8))
+
+            name_image = "CW" + str(number_image)
+
+            path_save = rf"{path_save_dir}/{name_image}.tif"
+
+            if (os.path.exists(path_save)):
+                os.remove(path_save)
+            img.save(path_save)
+            img.close()
+            number_image += 1
+
+            print(f"картинок обработано {i}")
+            i += 1
+
+    except StopIteration:
+        print("все изображения считаны")
+
+    except Exception:
+        print("ЧТО - ТО СЛУЧИЛОСЬ ")
+
+    finally:
+        print("выкл matlab")
+        mat_lab_lwt2.exit_engine()
+
+    print()
+
+
 def LWT2EmbedWaterMark(path_waterMark, path_dataSet, path_save_dir , Treshold = 3.46):
     ## Данная функция берет все изображения из директории path_dataSet
     ## и встраивает туда водяной знак в область виевлет преобразования 3 уровня
@@ -40,13 +103,13 @@ def LWT2EmbedWaterMark(path_waterMark, path_dataSet, path_save_dir , Treshold = 
 
             CA, CH, CV, CD = mat_lab_lwt2.lwt2(image)
             # [ll,lh,hl,hh] = lwt2(x)
-            c = transformator.get_NP(CV)
+            c = transformator.get_NP(CA)
 
             cobj = scheme_embedding.embed_in_hl2(c)
 
             Cobj_water = transformator.get_MatLab_matrix(cobj)
 
-            sourse_image = mat_lab_lwt2.ilwt2(CA, CH, Cobj_water, CD )
+            sourse_image = mat_lab_lwt2.ilwt2(Cobj_water, CH, CV, CD )
 
             image_np = transformator.get_NP(sourse_image)
 
@@ -198,7 +261,7 @@ def embed_wm_differn_T(threshold_list_arg):
         dirsave = dirpath + str(T)
         print("Порог = ", T)
         print("сохранение в папку ", dirsave)
-        LWT2EmbedWaterMark(path_water_mark, "Task7/Img", dirsave, T)
+        lwt2_in_all_image(path_water_mark, "Task7/Img", dirsave, T)
 
 def dependens_PSNR_and_T(threshold_list):
 
@@ -232,19 +295,20 @@ def dependens_PSNR_and_T(threshold_list):
             print(rf" psnr = {PSNR} . Картинка № {path[indexstart:]}")
             list_value_psnr.append(PSNR)
 
-        new_row = {'Threshold': T, "img1": round(list_value_psnr[0],1), "img2": round(list_value_psnr[1],1), "img3": round(list_value_psnr[2],1),
-               "img4": round(list_value_psnr[3],1)}
+        #new_row = {'Threshold': T, "img1": round(list_value_psnr[0],1), "img2": round(list_value_psnr[1],1), "img3": round(list_value_psnr[2],1),"img4": round(list_value_psnr[3],1) , "img5": round(list_value_psnr[4],1)}
+
+        new_row = {'Threshold': T, "img1": round(list_value_psnr[0], 1), "img2": round(list_value_psnr[1], 1)}
+
 
         listrow.append(new_row)
 
     columns = ['Threshold', 'img1', 'img2', 'img3', 'img4'  ]
     df = pd.DataFrame(data=listrow, columns=columns)
     df.to_excel("Task7/Psnr at T.xlsx")
-    df.to_csv("Task7/Psnr at t.txt")
 
 #Зависимость метрик (PSNR и ещё че ни будь) от порога (T) для разныхх картинов типа лена оронгутанг танк перцы и тд .
 def Task7():
-    threshold_list = np.arange(0, 170, 2)
+    threshold_list = np.arange(1, 50, 10)
     embed_wm_differn_T(threshold_list)
     dependens_PSNR_and_T(threshold_list)
 
