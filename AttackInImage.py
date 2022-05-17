@@ -100,6 +100,43 @@ class Attack:
         except StopIteration:
             print("все изображения считаны")
 
+    def salt_peper_attack(self, path_image, path_image_attacked, p=0.01):
+        load_name = ImagesNamesLoader()
+        path_name_image = load_name.get_image_name_list(path_image)
+        load_image = ImageLoader(path_name_image)
+
+        number_image = 1
+        i = 1
+
+        try:
+            while True:
+                image = load_image.next_image()
+
+                noise = random_noise(np.full(image.shape, -1), mode='s&p', amount=p)
+
+                bad_image = image.copy()
+
+                bad_image[noise == -1] = 0
+                bad_image[noise == 1] = 255
+
+                img = Image.fromarray(bad_image.astype(np.uint8))
+                name_image = "SaltPaperAttackedImage" + str(number_image)
+
+                path_save = rf"{path_image_attacked}/{name_image}.tif"
+
+                if (os.path.exists(path_save)):
+                    os.remove(path_save)
+                img.save(path_save)
+                img.close()
+                number_image += 1
+
+                if (i % 25 == 0):
+                    print(f"картинок атаковано соль-перец {i}")
+                i += 1
+
+        except StopIteration:
+            print("все изображения считаны")
+
     def median_attack(self, path_image, path_image_attacked, window=(3,3)):
         load_name = ImagesNamesLoader()
         path_name_image = load_name.get_image_name_list(path_image)
