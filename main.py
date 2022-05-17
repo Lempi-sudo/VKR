@@ -46,7 +46,7 @@ def LWT2EmbedWaterMarkcopy(path_waterMark, path_dataSet, path_save_dir , Treshol
             # [ll,lh,hl,hh] = lwt2(x)
             cv = transformator.get_NP(CV)
 
-            cv_water = scheme_embedding.embed(cv)
+            cv_water = scheme_embedding.embed_in_hl2(cv)
 
             CV_water = transformator.get_MatLab_matrix(cv_water)
 

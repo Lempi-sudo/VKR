@@ -42,7 +42,7 @@ def LWT2EmbedWaterMark(path_waterMark, path_dataSet, path_save_dir , Treshold = 
             # [ll,lh,hl,hh] = lwt2(x)
             c = transformator.get_NP(CV)
 
-            cobj = scheme_embedding.embed(c)
+            cobj = scheme_embedding.embed_in_hl2(c)
 
             Cobj_water = transformator.get_MatLab_matrix(cobj)
 

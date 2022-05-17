@@ -85,7 +85,7 @@ class WatermarkEmbedding:
                 blocks.append(block)
         return blocks
 
-    def embed(self, f):
+    def embed_in_hl2(self, f):
         iter_water = iter(self.W)
         if f.shape[0] > 64 or f.shape[1] > 64:
             hl2 = self.__extract_hl2_area__(f)
@@ -114,4 +114,45 @@ class WatermarkEmbedding:
 
         f_res=self.__insert_hl2_inF__(f,hl2_res)
 
+        return  f_res
+
+
+    def extract_sample_block(self, f):
+        size = f.shape[0]
+        blocks = []
+        pse=(2,size,8)
+        for i in range(pse[0],pse[1],pse[2]):
+            for j in range(pse[0],pse[1],pse[2]):
+                block = f[i:i + 2, j:j + 2]
+                blocks.append(block)
+        return blocks
+
+
+
+    def embed_in_all_image(self, f):
+        iter_water = iter(self.W)
+
+        sample_block = self.extract_sample_block(f)
+
+        f_res=f.copy()
+        f_res=f_res.astype(np.float)
+
+        G = self.__calculate_G__(sample_block)
+
+
+        size = f_res.shape[0]
+        pse = (2, size, 8)
+
+        # number_bit=0
+        for i in range(pse[0],pse[1],pse[2]):
+            for j in range(pse[0],pse[1],pse[2]):
+                block = f_res[i:i + 2, j:j + 2]
+                try:
+                    bit = next(iter_water)
+                except StopIteration:
+                    print("кончился водяной знак")
+                # print(f"бит водяного знака {bit} номер {number_bit}")
+                # number_bit+=1
+                block_with_water_mark = self.__water_mark_bit_embed_in_sample_block__(block, bit, G)
+                f_res[i:i + 2, j:j + 2]=block_with_water_mark
         return  f_res
