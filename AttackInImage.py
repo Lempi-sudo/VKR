@@ -5,6 +5,7 @@ from PIL import Image ,ImageEnhance
 import numpy as np
 from skimage.util import random_noise
 import cv2
+from skimage.io import imread
 from scipy.ndimage import gaussian_filter
 
 
@@ -126,6 +127,51 @@ class Attack:
             print("все изображения считаны")
 
 
+    def frame_replacement(self, path_image, path_image_attacked, size=51 , path_image_for_replace="Empty"):
+        load_name = ImagesNamesLoader()
+        path_name_image = load_name.get_image_name_list(path_image)
+        load_image = ImageLoader(path_name_image)
+
+        number_image = 1
+        i = 1
+
+        try:
+            while True:
+                image = load_image.next_image()
+
+                size_image= int(image.shape[0]/2)
+
+                bad_image = image.copy()
+
+                if path_image_for_replace!="Empty":
+                    image_for_replace=imread("CW/Image00001.tif")
+                    h=40
+                    w=190
+                    bad_image[size_image:size_image + size, size_image:size_image + size] = image_for_replace[h : h + size * 1,w : w + size * 1]
+                else:
+                    bad_image[size_image:size_image + size ,size_image:size_image + size ] = image[size_image+size : size_image+ size*2 ,size_image+size : size_image+ size*2 ]
+
+
+                img = Image.fromarray(bad_image.astype(np.uint8))
+                name_image = "replace" + str(number_image)
+
+                path_save = rf"{path_image_attacked}/{name_image}.tif"
+
+                if (os.path.exists(path_save)):
+                    os.remove(path_save)
+                img.save(path_save)
+                img.close()
+                number_image += 1
+
+                if (i % 25 == 0):
+                    print(f"картинок атаковано замена кадра {i}")
+                i += 1
+
+        except StopIteration:
+            print("все изображения считаны")
+
+
+
     #Работает!!! , но уже не помню как :)=
     def median_attack(self, path_image, path_image_attacked, window=(3,3)):
         load_name = ImagesNamesLoader()
@@ -159,42 +205,6 @@ class Attack:
         except StopIteration:
             print("все изображения считаны")
 
-    def salt_peper_attack(self, path_image, path_image_attacked, p=0.01):
-        load_name = ImagesNamesLoader()
-        path_name_image = load_name.get_image_name_list(path_image)
-        load_image = ImageLoader(path_name_image)
-
-        number_image = 1
-        i = 1
-
-        try:
-            while True:
-                image = load_image.next_image()
-
-                noise = random_noise(np.full(image.shape, -1), mode='s&p', amount=p)
-
-                bad_image = image.copy()
-
-                bad_image[noise == -1] = 0
-                bad_image[noise == 1] = 255
-
-                img = Image.fromarray(bad_image.astype(np.uint8))
-                name_image = "SaltPaperAttackedImage" + str(number_image)
-
-                path_save = rf"{path_image_attacked}/{name_image}.tif"
-
-                if (os.path.exists(path_save)):
-                    os.remove(path_save)
-                img.save(path_save)
-                img.close()
-                number_image += 1
-
-                if (i % 25 == 0):
-                    print(f"картинок атаковано соль-перец {i}")
-                i += 1
-
-        except StopIteration:
-            print("все изображения считаны")
 
     def average_filter(self,path_image, path_image_attacked, window=3):
         load_name = ImagesNamesLoader()

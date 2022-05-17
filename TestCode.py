@@ -14,14 +14,13 @@ import collections
 import WatermarkEmbedding as we
 import Helper
 from WatermarkEmbedding import *
-
+from AttackInImage import *
 
 
 if __name__ == '__main__':
-    arr = np.zeros((256,256))
-    water_mark = WaterMarkLoader.load("Water Mark Image/WaterMarkRandom.jpg")  # считывание водяного знака
-    wm = WatermarkEmbedding(water_mark)
-    b = wm.embed_in_all_image(arr)
+    intruder = Attack()
+    intruder.frame_replacement("CW","AttackedImage/Replace_frame" , size=100 , path_image_for_replace="nno")
+
 
 
 

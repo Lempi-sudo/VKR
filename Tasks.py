@@ -42,7 +42,7 @@ def lwt2_in_all_image(path_waterMark, path_dataSet, path_save_dir , Treshold = 3
             CA, CH, CV, CD = mat_lab_lwt2.lwt2(image , level= 1)
             # [ll,lh,hl,hh] = lwt2(x)
 
-            c = transformator.get_NP(CA)
+            c = transformator.get_NP(CV)
 
             cobj = scheme_embedding.embed_in_all_image(c)
 
