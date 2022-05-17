@@ -6,10 +6,11 @@ from PIL import Image
 from CreateFeatureVector import ImageFeature
 from AttackInImage import Attack
 from skimage.util import random_noise
-from Metrici import psnr , pobitovo_sravnenie_WaterMark
+from Metrici import psnr, pobitovo_sravnenie_WaterMark
 import cv2
 from ImageWork import *
 import pandas as pd
+from Helper import GenerateBinaryWaterMark
 
 
 def get_water_mark(path):
@@ -39,13 +40,13 @@ def LWT2EmbedWaterMark(path_waterMark, path_dataSet, path_save_dir , Treshold = 
 
             CA, CH, CV, CD = mat_lab_lwt2.lwt2(image)
             # [ll,lh,hl,hh] = lwt2(x)
-            c = transformator.get_NP(CA)
+            c = transformator.get_NP(CV)
 
             cobj = scheme_embedding.embed(c)
 
             Cobj_water = transformator.get_MatLab_matrix(cobj)
 
-            sourse_image = mat_lab_lwt2.ilwt2(Cobj_water, CH, CV, CD )
+            sourse_image = mat_lab_lwt2.ilwt2(CA, CH, Cobj_water, CD )
 
             image_np = transformator.get_NP(sourse_image)
 
@@ -116,13 +117,13 @@ def all_feature():
     pathwaterMark = "Water Mark Image/WaterMarkRandom.jpg"
     water_mark = WaterMarkLoader.load(pathwaterMark)
 
-    create_feature("feature_vec/AverageAttack.txt", "AttackedImage/AverageAttack", water_mark)
-    create_feature("feature_vec/HistogramAttack.txt", "AttackedImage/HistogramAttack", water_mark)
-    create_feature("feature_vec/GammaCorrection.txt", "AttackedImage/GammaCorrection", water_mark)
-    create_feature("feature_vec/JPEG50.txt", "AttackedImage/JPEG50", water_mark)
-    create_feature("feature_vec/medianAttack.txt", "AttackedImage/medianAttack", water_mark)
-    create_feature("feature_vec/SaltPaperAttack.txt", "AttackedImage/SaltPaperAttack", water_mark)
-    create_feature("feature_vec/Sharpness.txt", "AttackedImage/Sharpness", water_mark)
+    #create_feature("feature_vec/AverageAttack.txt", "AttackedImage/AverageAttack", water_mark)
+    # create_feature("feature_vec/HistogramAttack.txt", "AttackedImage/HistogramAttack", water_mark)
+    # create_feature("feature_vec/GammaCorrection.txt", "AttackedImage/GammaCorrection", water_mark)
+    # create_feature("feature_vec/JPEG50.txt", "AttackedImage/JPEG50", water_mark)
+    # create_feature("feature_vec/medianAttack.txt", "AttackedImage/medianAttack", water_mark)
+    # create_feature("feature_vec/SaltPaperAttack.txt", "AttackedImage/SaltPaperAttack", water_mark)
+    # create_feature("feature_vec/Sharpness.txt", "AttackedImage/Sharpness", water_mark)
     create_feature("feature_vec/NO_Attack.txt", "CW", water_mark)
 
 #1)	Обучить модель на 200 картинок с одним ЦВЗ и попробовать подсунуть обученной модели
@@ -255,10 +256,10 @@ def Task9():
     path_save_CW = 'CW'
 
     #ВСТРАИВАНИЕ ЦВЗ В ИЗОБРАЖЕНИЯ
-    LWT2EmbedWaterMark(path_waterMark, path_dataSet, path_save_CW,Treshold=12)
+    #LWT2EmbedWaterMark(path_waterMark, path_dataSet, path_save_CW,Treshold=30)
 
     #АТАКИ НА ИЗОБРАЖЕНИЯ С ЦВЗ
-    all_attack()
+    #all_attack()
 
     #СОЗДАНИЕ ВЕКТОРОВ ПРИЗНАКОВ
     all_feature()
@@ -283,7 +284,7 @@ def LWT2forTask10(path_dataSet, path_save_dir , number_image , level):
             CA, CH, CV, CD = mat_lab_lwt2.lwt2(image , level=level)
             # [ll,lh,hl,hh] = lwt2(x)
 
-            image_np = transformator.get_NP(CA)
+            image_np = transformator.get_NP(CH)
 
             img = Image.fromarray(image_np.astype(np.uint8))
 
@@ -316,8 +317,13 @@ def LWT2forTask10(path_dataSet, path_save_dir , number_image , level):
 def Task10():
     path_save_CW = "sampleBlock"
     path_dataSet= "Task7/Img"
-    for i in range(1,7,1):
+    for i in range(3,4,1):
         LWT2forTask10(path_dataSet, path_save_CW,i,i)
 
 
 
+def Task11():
+    wm = GenerateBinaryWaterMark.water_mark_coeff(coef=8)
+    img = Image.fromarray(wm.astype(np.uint8))
+    img.save("Water Mark Image/90black.tif")
+    img.close()

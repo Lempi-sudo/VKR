@@ -58,8 +58,8 @@ class WatermarkEmbedding:
             if eb_max < max(G, self.T):
                 f_c = f_c + self.T / 2
             else:
-                f_c = f_c - self.T / 2
-                #print(rf"eb_max={eb_max} > max( {G}, {self.T})")
+                f_c = f_c #- self.T / 2 МЕНЯЮ АЛГОРИТМ ВСТРАИВАНИЯ КАК ВО ВТОРОМ ДОКУМЕНТЕ
+                 #print(rf"eb_max={eb_max} > max( {G}, {self.T})")
 
         else:
             f_c = f_c - eb_max

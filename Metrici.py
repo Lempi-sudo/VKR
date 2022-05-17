@@ -12,6 +12,8 @@ def psnr(W, Wr):
     return p
 
 
+    
+
 def cv2PSRN(Wpath, Wrpath):
     W = imread("DataSet/Image00001.tif")
     Wr = imread("CW/CW1.tif")

@@ -12,6 +12,13 @@ class GenerateBinaryWaterMark:
     def water_mark(size=32 * 32):
         return np.random.randint(2, size=size)
 
+    def water_mark_coeff(size=32 * 32 , coef = 4 ):
+        wm= np.random.randint(9, size=size)
+        wm= wm.reshape((32,32))
+        wm[wm<coef]=0
+        wm[wm>=coef]=255
+        return wm
+
 
 
 def GenerateWaterMark(IsSave = False, path_save = rf"Water Mark Image/WaterMarkRandom.tif"):
