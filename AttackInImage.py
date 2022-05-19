@@ -370,7 +370,7 @@ class Attack:
         self.Gamma_Correction(image_path, Gamma_Correction)
         self.Sharpness(image_path, Sharpness)
         self.Crop("CW", crop , p=51 , mode="V")
-        self.frame_replacement("CW",replace , size=51 ,path_image_for_replace="No_Empty")
+        self.frame_replacement("CW",replace , size=51 ,path_image_for_replace="Empty")
 
 
 

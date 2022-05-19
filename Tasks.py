@@ -39,7 +39,7 @@ def lwt2_in_all_image(path_waterMark, path_dataSet, path_save_dir , Treshold = 3
         while True:
             image = load_image.next_image()
 
-            CA, CH, CV, CD = mat_lab_lwt2.lwt2(image , level= 1)
+            CA, CH, CV, CD = mat_lab_lwt2.lwt2(image , level = 1)
             # [ll,lh,hl,hh] = lwt2(x)
 
             c = transformator.get_NP(CV)
@@ -48,7 +48,7 @@ def lwt2_in_all_image(path_waterMark, path_dataSet, path_save_dir , Treshold = 3
 
             Cobj_water = transformator.get_MatLab_matrix(cobj)
 
-            sourse_image = mat_lab_lwt2.ilwt2(CA, CH, Cobj_water, CD , level = 1)
+            sourse_image = mat_lab_lwt2.ilwt2(CA, CH, Cobj_water,CD , level = 1)
 
             image_np = transformator.get_NP(sourse_image)
 
@@ -147,6 +147,7 @@ def all_attack():
 #функция создает txt документ с таблицей  векторов признаков (путь - path_save_feature_vec_arg)
 #вектора признаков формируются из картинок со встроенным ЦВЗ, после либо до атаки.
 def create_feature(path_save_feature_vec_arg, path_image_water_arg, water_mark_arg):
+    print(path_save_feature_vec_arg)
     water_mark = water_mark_arg
     extract_feature = ImageFeature(water_mark)
     path_save_feature_vec = path_save_feature_vec_arg
@@ -158,13 +159,15 @@ def create_feature(path_save_feature_vec_arg, path_image_water_arg, water_mark_a
 def all_feature():
     pathwaterMark = "Water Mark Image/WaterMarkRandom.jpg"
     water_mark = WaterMarkLoader.load(pathwaterMark)
-    create_feature("feature_vec/AverageAttack.txt", "AttackedImage/AverageAttack", water_mark)
-    create_feature("feature_vec/HistogramAttack.txt", "AttackedImage/HistogramAttack", water_mark)
-    create_feature("feature_vec/GammaCorrection.txt", "AttackedImage/GammaCorrection", water_mark)
-    create_feature("feature_vec/JPEG50.txt", "AttackedImage/JPEG50", water_mark)
-    create_feature("feature_vec/medianAttack.txt", "AttackedImage/medianAttack", water_mark)
-    create_feature("feature_vec/SaltPaperAttack.txt", "AttackedImage/SaltPaperAttack", water_mark)
-    create_feature("feature_vec/Sharpness.txt", "AttackedImage/Sharpness", water_mark)
+    # create_feature("feature_vec/AverageAttack.txt", "AttackedImage/AverageAttack", water_mark)
+    # create_feature("feature_vec/HistogramAttack.txt", "AttackedImage/HistogramAttack", water_mark)
+    # create_feature("feature_vec/GammaCorrection.txt", "AttackedImage/GammaCorrection", water_mark)
+    # create_feature("feature_vec/JPEG50.txt", "AttackedImage/JPEG50", water_mark)
+    # create_feature("feature_vec/medianAttack.txt", "AttackedImage/medianAttack", water_mark)
+    # create_feature("feature_vec/SaltPaperAttack.txt", "AttackedImage/SaltPaperAttack", water_mark)
+    # create_feature("feature_vec/Sharpness.txt", "AttackedImage/Sharpness", water_mark)
+    # create_feature("feature_vec/Replace_frame.txt", "AttackedImage/Replace_frame", water_mark)
+    # create_feature("feature_vec/Crop.txt", "AttackedImage/Crop", water_mark)
     create_feature("feature_vec/NO_Attack.txt", "CW", water_mark)
 
 
@@ -282,20 +285,26 @@ def dependens_PSNR_and_T(threshold_list):
             print(rf" psnr = {PSNR} . Картинка № {path[indexstart:]}")
             list_value_psnr.append(PSNR)
 
-        #new_row = {'Threshold': T, "img1": round(list_value_psnr[0],1), "img2": round(list_value_psnr[1],1), "img3": round(list_value_psnr[2],1),"img4": round(list_value_psnr[3],1) , "img5": round(list_value_psnr[4],1)}
+        new_row = {'Threshold': T, "img1": round(list_value_psnr[0],1), "img2": round(list_value_psnr[1],1), "img3": round(list_value_psnr[2],1),"img4": round(list_value_psnr[3],1) , "img5": round(list_value_psnr[4],1) ,"img6": round(list_value_psnr[5],1) , "img7": round(list_value_psnr[6],1)}
 
-        new_row = {'Threshold': T, "img1": round(list_value_psnr[0], 1), "img2": round(list_value_psnr[1], 1)}
+
 
 
         listrow.append(new_row)
 
-    columns = ['Threshold', 'img1', 'img2', 'img3', 'img4'  ]
+    columns = ['Threshold', 'img1', 'img2', 'img3', 'img4','img5','img6', 'img7', ]
     df = pd.DataFrame(data=listrow, columns=columns)
     df.to_excel("Task7/Psnr at T.xlsx")
 
 #Зависимость метрик (PSNR и ещё че ни будь) от порога (T) для разныхх картинов типа лена оронгутанг танк перцы и тд .
 def Task7():
-    threshold_list = np.arange(1, 50, 10)
+    start = np.arange(0, 20, 5)
+    main=   np.arange(20, 40, 10)
+    finish= np.arange(40, 100, 20)
+    t= np.hstack([start, main])
+    t2=np.hstack([t, finish])
+    threshold_list=t2
+    threshold_list = np.arange(0, 90, 20)
     embed_wm_differn_T(threshold_list)
     dependens_PSNR_and_T(threshold_list)
 
@@ -306,7 +315,7 @@ def Task9():
     path_save_CW = 'CW'
 
     #ВСТРАИВАНИЕ ЦВЗ В ИЗОБРАЖЕНИЯ
-    #LWT2EmbedWaterMark(path_waterMark, path_dataSet, path_save_CW,Treshold=30)
+    lwt2_in_all_image(path_waterMark, path_dataSet, path_save_CW,Treshold=3.5)
 
     #АТАКИ НА ИЗОБРАЖЕНИЯ С ЦВЗ
     #all_attack()

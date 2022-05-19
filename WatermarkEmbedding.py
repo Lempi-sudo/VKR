@@ -117,10 +117,10 @@ class WatermarkEmbedding:
         return  f_res
 
 
-    def extract_sample_block(self, f):
+    def extract_sample_block(self, f , step=8):
         size = f.shape[0]
         blocks = []
-        pse=(2,size,8)
+        pse=(2,size,step)
         for i in range(pse[0],pse[1],pse[2]):
             for j in range(pse[0],pse[1],pse[2]):
                 block = f[i:i + 2, j:j + 2]
