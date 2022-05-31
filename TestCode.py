@@ -17,12 +17,18 @@ from WatermarkEmbedding import *
 from AttackInImage import *
 from CreateFeatureVector import *
 
+def f1(pr , re):
+    f1= 2* ((pr*re)/(pr+re))
+    return f1
+
+def acc(zz ,ff , total=1024):
+    return  (zz+ff)/total
+
 
 if __name__ == '__main__':
-    pathwaterMark = "Water Mark Image/WaterMarkRandom.jpg"
-    water_mark = WaterMarkLoader.load(pathwaterMark)
-    f= ImageFeature(water_mark)
-    f.save_all_image_feature_data("feature_vec/Test.txt","Task7/Img")
+    print(f1(0.61,0.64))
+    print(acc(72908,25161))
+
 
 
 

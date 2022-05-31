@@ -52,4 +52,5 @@ class WaterMarkLoader:
         except WaterMarkWrong as e:
             print(e)
             raise SystemExit(1)
+
         return water_mark.ravel()

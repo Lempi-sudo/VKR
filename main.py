@@ -16,7 +16,7 @@ import pandas as pd
 
 
 def embed_readble_wm():
-    path_waterMark = "Water Mark Image/waterMark3.jpg"
+    path_waterMark = "Water Mark Image/waterMark6.jpg"
     path_dataSet = 'DataSetTest'
     path_save_water_mark_image = 'ImgWMReadble'
     LWT2EmbedWaterMark_HL2(path_waterMark, path_dataSet, path_save_water_mark_image)
@@ -107,7 +107,7 @@ def All_Attack_ReadbleImg():
 
 
 if __name__ == '__main__':
-    Task7()
+    Task9()
 
     # path_waterMark = "Water Mark Image/WaterMarkRandom.jpg" # путь до водяного знака3 (Дота2)
     # path_dataSet = 'DataSet/AnotherCWTask1/' # путь до набора картинок

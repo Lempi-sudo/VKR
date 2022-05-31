@@ -13,9 +13,22 @@ import pandas as pd
 from Helper import GenerateBinaryWaterMark
 
 
-def get_water_mark(path):
-    water_mark = WaterMarkLoader.load(path)
-    return water_mark
+#Task9: проверить метрики при вставке цвз в разнвые части (hh ll lh hl)
+def Task9():
+    path_waterMark = "Water Mark Image/waterMark4.jpg"
+    path_dataSet = 'DataSet'  # путь до набора картинок
+    path_save_CW = 'CW'
+
+    #ВСТРАИВАНИЕ ЦВЗ В ИЗОБРАЖЕНИЯ
+    #lwt2_in_all_image(path_waterMark, path_dataSet, path_save_CW,Treshold=3.5)
+
+    #АТАКИ НА ИЗОБРАЖЕНИЯ С ЦВЗ
+    all_attack()
+
+    #СОЗДАНИЕ ВЕКТОРОВ ПРИЗНАКОВ
+    all_feature(pathwaterMark="Water Mark Image/WaterMarkRandom.jpg")
+
+
 
 
 def lwt2_in_all_image(path_waterMark, path_dataSet, path_save_dir , Treshold = 3.46):
@@ -23,6 +36,8 @@ def lwt2_in_all_image(path_waterMark, path_dataSet, path_save_dir , Treshold = 3
     ## и встраивает туда водяной знак в область виевлет преобразования 3 уровня
     ## и сохраняет в path_save_dir
     water_mark = WaterMarkLoader.load(path_waterMark)  # считывание водяного знака
+
+
 
     load_name = ImagesNamesLoader()
     path_name_image = load_name.get_image_name_list(path_dataSet)
@@ -42,13 +57,13 @@ def lwt2_in_all_image(path_waterMark, path_dataSet, path_save_dir , Treshold = 3
             CA, CH, CV, CD = mat_lab_lwt2.lwt2(image , level = 1)
             # [ll,lh,hl,hh] = lwt2(x)
 
-            c = transformator.get_NP(CV)
+            c = transformator.get_NP(CH)
 
             cobj = scheme_embedding.embed_in_all_image(c)
 
             Cobj_water = transformator.get_MatLab_matrix(cobj)
 
-            sourse_image = mat_lab_lwt2.ilwt2(CA, CH, Cobj_water,CD , level = 1)
+            sourse_image = mat_lab_lwt2.ilwt2(CA, Cobj_water, CV,CD , level = 1)
 
             image_np = transformator.get_NP(sourse_image)
 
@@ -78,6 +93,10 @@ def lwt2_in_all_image(path_waterMark, path_dataSet, path_save_dir , Treshold = 3
         mat_lab_lwt2.exit_engine()
 
     print()
+
+def get_water_mark(path):
+    water_mark = WaterMarkLoader.load(path)
+    return water_mark
 
 
 def LWT2EmbedWaterMark_HL2(path_waterMark, path_dataSet, path_save_dir, Treshold = 3.46):
@@ -156,19 +175,21 @@ def create_feature(path_save_feature_vec_arg, path_image_water_arg, water_mark_a
     extract_feature.close()
 
 
-def all_feature():
-    pathwaterMark = "Water Mark Image/WaterMarkRandom.jpg"
+def all_feature(pathwaterMark="Water Mark Image/WaterMarkRandom.jpg"):
     water_mark = WaterMarkLoader.load(pathwaterMark)
+    create_feature("feature_vec/JPEG50.txt", "AttackedImage/JPEG50", water_mark)
+    # create_feature("feature_vec/JPEG40.txt", "AttackedImage/JPEG40", water_mark)
+    # create_feature("feature_vec/JPEG30.txt", "AttackedImage/JPEG30", water_mark)
+    # create_feature("feature_vec/JPEG20.txt", "AttackedImage/JPEG20", water_mark)
     # create_feature("feature_vec/AverageAttack.txt", "AttackedImage/AverageAttack", water_mark)
     # create_feature("feature_vec/HistogramAttack.txt", "AttackedImage/HistogramAttack", water_mark)
     # create_feature("feature_vec/GammaCorrection.txt", "AttackedImage/GammaCorrection", water_mark)
-    # create_feature("feature_vec/JPEG50.txt", "AttackedImage/JPEG50", water_mark)
-    # create_feature("feature_vec/medianAttack.txt", "AttackedImage/medianAttack", water_mark)
+    create_feature("feature_vec/medianAttack.txt", "AttackedImage/medianAttack", water_mark)
     # create_feature("feature_vec/SaltPaperAttack.txt", "AttackedImage/SaltPaperAttack", water_mark)
     # create_feature("feature_vec/Sharpness.txt", "AttackedImage/Sharpness", water_mark)
     # create_feature("feature_vec/Replace_frame.txt", "AttackedImage/Replace_frame", water_mark)
     # create_feature("feature_vec/Crop.txt", "AttackedImage/Crop", water_mark)
-    create_feature("feature_vec/NO_Attack.txt", "CW", water_mark)
+    # create_feature("feature_vec/NO_Attack.txt", "CW", water_mark)
 
 
 
@@ -308,20 +329,7 @@ def Task7():
     embed_wm_differn_T(threshold_list)
     dependens_PSNR_and_T(threshold_list)
 
-#Task9: проверить метрики при вставке цвз в разнвые части (hh ll lh hl)
-def Task9():
-    path_waterMark = "Water Mark Image/WaterMarkRandom.jpg"
-    path_dataSet = 'DataSet'  # путь до набора картинок
-    path_save_CW = 'CW'
 
-    #ВСТРАИВАНИЕ ЦВЗ В ИЗОБРАЖЕНИЯ
-    lwt2_in_all_image(path_waterMark, path_dataSet, path_save_CW,Treshold=3.5)
-
-    #АТАКИ НА ИЗОБРАЖЕНИЯ С ЦВЗ
-    #all_attack()
-
-    #СОЗДАНИЕ ВЕКТОРОВ ПРИЗНАКОВ
-    all_feature()
 
 def LWT2forTask10(path_dataSet, path_save_dir , number_image , level):
     load_name = ImagesNamesLoader()

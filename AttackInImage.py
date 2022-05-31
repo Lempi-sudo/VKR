@@ -363,14 +363,17 @@ class Attack:
         crop = "AttackedImage/Crop"
 
         self.median_attack(path_image=image_path , path_image_attacked=image_attacked_median )
-        self.salt_peper_attack(path_image=image_path , path_image_attacked= image_attacked_salt_paper)
-        self.average_filter(path_image=image_path, path_image_attacked=image_attacked_average)
+        # self.salt_peper_attack(path_image=image_path , path_image_attacked= image_attacked_salt_paper)
+        # self.average_filter(path_image=image_path, path_image_attacked=image_attacked_average)
         self.Save_JPEG(image_path, image_save_jpeg50, 50)
-        self.Histogram(image_path,image_histogram)
-        self.Gamma_Correction(image_path, Gamma_Correction)
-        self.Sharpness(image_path, Sharpness)
-        self.Crop("CW", crop , p=51 , mode="V")
-        self.frame_replacement("CW",replace , size=51 ,path_image_for_replace="Empty")
+        # self.Save_JPEG(image_path, image_save_jpeg40, 40)
+        # self.Save_JPEG(image_path, image_save_jpeg30, 30)
+        # self.Save_JPEG(image_path, image_save_jpeg20, 20)
+        # self.Histogram(image_path,image_histogram)
+        # self.Gamma_Correction(image_path, Gamma_Correction)
+        # self.Sharpness(image_path, Sharpness)
+        # self.Crop("CW", crop , p=102 , mode="V")
+        # self.frame_replacement("CW",replace , size=102 ,path_image_for_replace="Empty")
 
 
 
