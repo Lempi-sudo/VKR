@@ -38,3 +38,6 @@ def GenerateWaterMark(IsSave = False, path_save = rf"Water Mark Image/WaterMarkR
     return wm_res
 
 
+
+
+

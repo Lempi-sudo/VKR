@@ -25,9 +25,18 @@ def acc(zz ,ff , total=1024):
     return  (zz+ff)/total
 
 
+def calcW(w1 = 1, w2 = 1 , w3 = 1, w4 = 1 ):
+    t0=4*w1
+    t1=w1*w2
+    t2=w2*w3
+    t3=w3*w4
+    tf=w3*2
+    res = t0+t1+t2+t3+tf
+    print(res)
+    return res
+
 if __name__ == '__main__':
-    print(f1(0.61,0.64))
-    print(acc(72908,25161))
+    calcW(3,3,3)
 
 
 
